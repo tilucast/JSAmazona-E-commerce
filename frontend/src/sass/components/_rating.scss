@@ -1,0 +1,15 @@
+.rating{
+    display: flex;
+    align-items: center;
+    line-height: 1;
+
+    .gold{
+        color: var(--color-icons-gold);
+    }
+}
+
+.reviewText{
+    font-weight: bold;
+    color: var(--color-text-dark);
+    margin-left: 8px;
+}

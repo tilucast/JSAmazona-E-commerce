@@ -1,0 +1,73 @@
+#progressIndicator{
+    grid-column: center-start / center-end;
+}
+
+#mainContent{
+    background-color: var(--color-bg-light);
+    grid-column: center-start / center-end;
+
+    .products{
+        padding: 2rem 0;
+        display: grid;
+        place-items: center;
+        grid-gap: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(33rem, 1fr));
+    
+    
+        &__product{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+    
+            padding: 0 2rem;
+            width: 35rem;
+            
+    
+            &--imageDetails{
+                width: 80%;
+                padding-top: 1rem;
+                border-top: 2px solid var(--color-background);
+                margin-bottom: .5rem;
+    
+                img{
+                    width: 100%;
+                }
+            }
+    
+            &--productName{
+                text-decoration: none;
+                font-size: 2rem;
+                color: var(--color-text-dark);
+                font-weight: 600;
+                margin-bottom: .8rem;
+            }
+    
+            &--brandName{
+                align-self: flex-start;
+                color: var(--color-text-grayish);
+                font-size: 1.7rem;
+                margin-bottom: .8rem;
+            }
+    
+            &--productPrice{
+                align-self: flex-start;
+                color: var(--color-text-dark);
+                font-size: 2rem;
+                font-weight: bold;
+            }
+        }
+
+    }
+
+}
+
+.footer{
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+
+    padding: 3rem;
+    color: var(--color-text);
+    background-color: var(--color-background);
+    grid-column: full-start / full-end;
+}

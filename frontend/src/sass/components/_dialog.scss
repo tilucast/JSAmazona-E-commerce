@@ -1,0 +1,7 @@
+@use "@material/dialog";
+
+@include dialog.core-styles;
+
+.mdc-dialog__content{
+    font-size: 1.6rem;
+}

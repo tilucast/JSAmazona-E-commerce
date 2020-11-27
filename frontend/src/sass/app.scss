@@ -1,0 +1,28 @@
+@use "@material/theme" with (
+    $primary: goldenrod,
+    $on-primary:#f9fcff,
+    $secondary: #f08040,
+);
+
+@import "components/radiobuttons";
+@import "components/tabs";
+@import "components/dialog";
+@import "components/header";
+@import "components/progress-indicator";
+@import "components/textfield";
+//@import "components/texthelper";
+@import "components/snackbar";
+@import "components/button";
+@import "components/rating";
+@import "components/select";
+ 
+@import "base/base";
+@import "helpers/helperclasses";
+
+@import "pages/homepage";
+@import "pages/signup";
+@import "pages/profile";
+@import "pages/product";
+@import "pages/signin";
+@import "pages/checkout";
+@import "pages/cart";

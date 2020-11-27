@@ -1,0 +1,11 @@
+@use '@material/form-field';
+@use '@material/radio/styles';
+@use '@material/radio';
+
+@include form-field.core-styles;
+
+.mdc-radio{
+    @include radio.checked-stroke-color(var(--color-icons-gold));
+    @include radio.ink-color(var(--color-icons-gold));
+    @include radio.focus-indicator-color(var(--color-icons-gold))
+}
