@@ -2,22 +2,27 @@ import {parseRequestUrl} from '../utils/parseRequestUrl.js'
 import { getProduct } from '../utils/serverRequests.js'
 import Rating from '../components/Rating.js'
 import { initiateMaterialButton } from '../utils/materialIoScripts.js'
+import History from '../utils/History.js'
+
+const history = new History()
 
 export default class Product{
 
-    static afterRender(){
+    constructor(){}
+
+    afterRender(){
 
         const parseRequest = parseRequestUrl()
 
         initiateMaterialButton()
 
         document.querySelector('#cartButton').addEventListener('click', () => {
-            document.location.hash = `/cart/${parseRequest.id}`
+            history.push(`/cart/${parseRequest.id}`)
         })
 
     }
 
-    static async render() {    
+    async render() {    
 
         try{
 

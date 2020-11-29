@@ -5,12 +5,17 @@ import { initiateMaterialButton, initiateMaterialSnackbar, initiateMaterialTextF
 import passwordVisibility from "../utils/passwordVisibility"
 import { redirectAuthenticatedUser } from "../utils/protectedRoute"
 
-const redirect = getLocalStorageItem("redirectToPage") || '/'
 const history = new History()
 
 export default class SignIn{
 
-    static handleSignin(){
+    get redirect(){
+        return getLocalStorageItem("redirectToPage") || '/'
+    }
+
+    constructor(){}
+
+    handleSignin(){
 
         const form = document.querySelector('.signIn__box--form')
         
@@ -25,11 +30,11 @@ export default class SignIn{
                 
                 setLocalStorageItem('signedUserInfo', signedUserInfo.data)
 
-                if(redirect){
-                    history.push(redirect) 
-                    localStorage.removeItem("redirectToPage")
+                if(this.redirect){
+                    history.push(this.redirect) 
+                    return localStorage.removeItem("redirectToPage")
                 } else{
-                    history.push("/")
+                    return history.push("/")
                 }
             
             }catch(error){
@@ -42,7 +47,7 @@ export default class SignIn{
 
     }
 
-    static afterRender(){
+    afterRender(){
 
         initiateMaterialTextField()
         initiateMaterialButton()
@@ -52,7 +57,7 @@ export default class SignIn{
         this.handleSignin()
     }
 
-    static render(){
+    render(){
         
         redirectAuthenticatedUser()
 

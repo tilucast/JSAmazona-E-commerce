@@ -3,11 +3,13 @@ import {api} from '../utils/api.js'
 
 export default class HomeScreen{
 
-    static afterRender(){
+    constructor(){}
 
+    afterRender(){
+        
     }
 
-    static async render (){
+    async render (){
 
         const fetchData = await api.get('/api/products')
        

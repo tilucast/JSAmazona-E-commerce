@@ -9,19 +9,21 @@ const history = new History()
 
 export default class Checkout{
 
-    static get shippingInfo(){
+    constructor(){}
+
+    get shippingInfo(){
         return getLocalStorageItem("shippingInfo") || ""
     }
 
-    static get paymentInfo(){
+    get paymentInfo(){
         return getLocalStorageItem("paymentOption") || ""
     }
 
-    static get cartItems(){
+    get cartItems(){
         return getLocalStorageItem("cartItems") || []
     }
     
-    static renderShippingIntoHTML(){
+    renderShippingIntoHTML(){
         const placeorder = document.querySelector("#rerenderPlaceholder")
 
         return placeorder.innerHTML = `
@@ -44,13 +46,13 @@ export default class Checkout{
         `
     }
 
-    static handleChangeMaterialCurrentActiveTab(materialTab, tabIndex){
+    handleChangeMaterialCurrentActiveTab(materialTab, tabIndex){
         materialTab.foundation.adapter.setActiveTab(tabIndex)
         materialTab.foundation.adapter.activateTabAtIndex(tabIndex)
         materialTab.foundation.adapter.notifyTabActivated(tabIndex)
     }
 
-    static handleActivateMaterialTabs(materialTab){
+    handleActivateMaterialTabs(materialTab){
 
         const sections = Array.from(document.querySelectorAll(".checkout-section"))
 
@@ -80,7 +82,7 @@ export default class Checkout{
 
     }
 
-    static handleFinishPlaceOrder(){
+    handleFinishPlaceOrder(){
         const placeOrderButton = document.querySelector("#placeOrder")
         
         placeOrderButton.addEventListener("click", () => {
@@ -88,7 +90,7 @@ export default class Checkout{
         })
     }
 
-    static handleFormsValues(materialTab){
+    handleFormsValues(materialTab){
         const forms = Array.from(document.querySelectorAll("form"))
 
         forms[0].addEventListener("submit", (event) => {
@@ -116,7 +118,7 @@ export default class Checkout{
         })
     }
 
-    static afterRender(){
+    afterRender(){
 
         initiateMaterialMultipleButtons()
         initiateMaterialTextField()
@@ -138,7 +140,7 @@ export default class Checkout{
         )
     }
 
-    static render(){
+    render(){
 
         redirectUnauthenticatedUser()
 

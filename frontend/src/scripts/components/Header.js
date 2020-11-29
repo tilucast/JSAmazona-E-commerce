@@ -1,18 +1,27 @@
+import History from "../utils/History"
 import { getLocalStorageItem } from "../utils/localStorageRequests"
 
+const history = new History()
+
 export default class Header{
+
+    constructor(){}
+
+    get signedUser(){
+        return getLocalStorageItem("signedUserInfo") || ""
+    }
     
-    static afterRender(){
-        getLocalStorageItem("signedUserInfo") && document.querySelector("#logoutButton").addEventListener("click", () => {
+    afterRender(){
+        this.signedUser && document.querySelector("#logoutButton").addEventListener("click", () => {
             localStorage.removeItem("signedUserInfo")
 
-            document.location.hash = ""
+            history.push("")
         })
     }
 
-    static render(){
+    render(){
 
-        const {_id, name} = getLocalStorageItem('signedUserInfo') || ''
+        const {_id, name} = this.signedUser
         
         return `
             <div class="header__menu">
@@ -27,7 +36,7 @@ export default class Header{
                 |
                 <a href="src/#/cart">Cart</a>
 
-                ${getLocalStorageItem('signedUserInfo') ? 
+                ${this.signedUser ? 
                    `
                    | 
                    <span id="logoutButton" class="material-icons">
@@ -43,10 +52,9 @@ export default class Header{
         `
     }
 
-    static insertIntoHtml(){
+    insertIntoHtml(){
         const header = document.querySelector(".header")
         header.innerHTML = this.render()
-
         this.afterRender()
     }
 }

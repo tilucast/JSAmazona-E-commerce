@@ -1,4 +1,4 @@
-import { initiateMaterialMultipleButtons, initiateMaterialSelect } from '../utils/materialIoScripts.js'
+import { initiateMaterialMultipleButtons, initiateMaterialSelect} from '../utils/materialIoScripts.js'
 import {parseRequestUrl} from '../utils/parseRequestUrl.js'
 import rerenderComponent from '../utils/rerenderComponent.js'
 import {getProduct} from '../utils/serverRequests.js'
@@ -10,10 +10,16 @@ const history = new History()
 
 export default class Cart{
 
-    static handleSelectStateChange(selects){
+    constructor(){}
+
+    get cartItems(){
+        return getLocalStorageItem("cartItems") || []
+    }
+
+    handleSelectStateChange(selects){
         selects.map((select, index) => {
             
-            const cartItems = getLocalStorageItem('cartItems')
+            const cartItems = this.cartItems
 
             select.listen('MDCSelect:change', () => {
                 
@@ -27,13 +33,13 @@ export default class Cart{
         })
     }
 
-    static deleteProductCart(){
+    deleteProductCart(){
         const buttons = Array.from(document.querySelectorAll("#cartButton"))
 
         buttons.forEach(button => {
             button.addEventListener('click', (event) => {
 
-                let cartItems = getLocalStorageItem('cartItems')
+                let cartItems = this.cartItems
 
                 const filteredCart = cartItems.filter(product => {
                    return product.product !== Number(button.dataset.value)
@@ -42,7 +48,7 @@ export default class Cart{
                 filteredCart.length === 0 ? localStorage.removeItem('cartItems') : setLocalStorageItem('cartItems', filteredCart) 
                 
                 if(parseRequestUrl().id == button.dataset.value){
-                    window.location.hash = '/cart'
+                    history.push('/cart')
                 } else{
                     rerenderComponent(Cart, "#mainContent")
                 }
@@ -51,17 +57,15 @@ export default class Cart{
         })
     }
 
-    static sumOfItems(){
-        const sum = JSON.parse(localStorage.getItem('cartItems'))
+    sumOfItems(){
 
-        return sum.reduce((acc, value) => acc + value.price * value.qty, 0).toFixed(2)
+        return this.cartItems.reduce((acc, value) => acc + value.price * value.qty, 0).toFixed(2)
         
     }
 
-    static addToCart(item, forceUpdate = false){
+    addToCart(item, forceUpdate = false){
 
-        let cartItems = localStorage.getItem('cartItems') ?
-            JSON.parse(localStorage.getItem('cartItems')) : []
+        let cartItems = this.cartItems
 
         const checkForItem = cartItems.find(value => value.product === item.product)
 
@@ -74,10 +78,10 @@ export default class Cart{
             cartItems = [...cartItems, item]
         }
 
-        localStorage.setItem('cartItems', JSON.stringify(cartItems))
+        setLocalStorageItem("cartItems", cartItems)
     }
 
-    static afterRender(){
+    afterRender(){
         
         const selects = initiateMaterialSelect()
         initiateMaterialMultipleButtons()
@@ -90,14 +94,17 @@ export default class Cart{
         
         checkoutButton && checkoutButton.addEventListener('click', () => {
 
-            getLocalStorageItem("signedUserInfo") ? history.push('/checkout') 
-                : (history.push('/signin'), setLocalStorageItem("redirectToPage", "/checkout"))
+            if(getLocalStorageItem("signedUserInfo")){
+                return history.push("/checkout")
+            } else{
+                setLocalStorageItem("redirectToPage", "/checkout")
+                return history.push('/signin')
+            }
             
         })
-
     }
 
-    static async render(){
+    async render(){
 
         const parseRequest = parseRequestUrl()
 
@@ -124,8 +131,8 @@ export default class Cart{
                         <span>Price</span>
                     </article>
 
-                    ${localStorage.getItem("cartItems") ? 
-                        JSON.parse(localStorage.getItem('cartItems')).map(item => 
+                    ${this.cartItems.length ? 
+                        this.cartItems.map(item => 
                             `
                                 <div class="productsCart__productsList--product">
                                     <img src="${item.image}" alt="${item.name}" />
@@ -203,12 +210,12 @@ export default class Cart{
                         ).join(' ') : '<h3>Cart is empty /:</h3>'}
                 </div>
 
-                ${localStorage.getItem('cartItems') ?
+                ${this.cartItems.length ?
                     `
                         <div class="productsCart__checkout">
 
                             <span>
-                                Total: (${JSON.parse(localStorage.getItem('cartItems')).reduce((acc, value) => acc + value.qty, 0)}) 
+                                Total: (${this.cartItems.reduce((acc, value) => acc + value.qty, 0)}) 
                                 item(s): <strong>$${this.sumOfItems()}</strong>
                             </span>
 

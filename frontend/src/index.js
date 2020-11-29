@@ -9,6 +9,10 @@ import { initiateMaterialProgressIndicator } from './scripts/utils/materialIoScr
 import SignUp from './scripts/pages/SignUp.js'
 import Profile from './scripts/pages/Profile.js'
 import Checkout from './scripts/pages/Checkout.js'
+import ProgressIndicator from './scripts/components/ProgressIndicator.js'
+
+const progressIndicator = new ProgressIndicator()
+const header = new Header()
 
 const routes = {
     "/": HomeScreen,
@@ -22,17 +26,18 @@ const routes = {
 }
 
 const router = async () => {
-    initiateMaterialProgressIndicator()
+    progressIndicator.render()
+    initiateMaterialProgressIndicator().open()
 
     const request = parseRequestUrl()
 
     const parseUrl = (request.resource ? `/${request.resource}` : '/')
         + (request.id ? '/:id' : '') + 
         (request.action ? `/${request.action}` : '')
-    
-    const screen = routes[parseUrl] ? routes[parseUrl] : Error404
 
-    Header.insertIntoHtml()
+    const screen = routes[parseUrl] ? new routes[parseUrl] : new Error404
+
+    header.insertIntoHtml()
 
     const main = document.querySelector('#mainContent')
     
@@ -41,7 +46,6 @@ const router = async () => {
     if(screen.afterRender) await screen.afterRender()
 
     initiateMaterialProgressIndicator().close()
-
 }
 
 window.addEventListener('load', router)

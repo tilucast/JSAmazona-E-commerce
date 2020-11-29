@@ -1,9 +1,11 @@
 import { api } from "../utils/api"
-import { initiateMaterialButton, initiateMaterialProgressIndicator, initiateMaterialSnackbar, initiateMaterialTextField } from "../utils/materialIoScripts"
+import { initiateMaterialButton, initiateMaterialSnackbar, initiateMaterialTextField } from "../utils/materialIoScripts"
 
 export default class SignUp{
 
-    static handleSignUp(){
+    constructor(){}
+
+    handleSignUp(){
 
         const form = document.querySelector('.signUp__box--form')
 
@@ -35,13 +37,13 @@ export default class SignUp{
         
     }
 
-    static afterRender(){
+    afterRender(){
         initiateMaterialTextField()
         initiateMaterialButton()
         this.handleSignUp()
     }
 
-    static render(){
+    render(){
         return `
             <section class="signUp">
                 <div class="signUp__box">

@@ -9,7 +9,13 @@ import rerenderComponent from "../utils/rerenderComponent"
 
 export default class Profile{
 
-    static handleUpdateUserInfo(){
+    constructor(){}
+
+    get signedUser(){
+        return getLocalStorageItem("signedUserInfo") || []
+    }
+
+    handleUpdateUserInfo(){
         
         const form = document.querySelector(".profile__userInfo--form")
 
@@ -18,7 +24,7 @@ export default class Profile{
 
             try{
 
-                const signedUser = getLocalStorageItem("signedUserInfo")
+                const signedUser = this.signedUser
 
                 const dialog = Dialog.instantiateMaterialDialog()
                 dialog.open()
@@ -55,7 +61,7 @@ export default class Profile{
         })
     }
 
-    static afterRender(){
+    afterRender(){
 
         initiateMaterialButton()
         initiateMaterialTextField()
@@ -74,11 +80,11 @@ export default class Profile{
         
     }
 
-    static render(){
+    render(){
 
         redirectUnauthenticatedUser()
 
-        const {name, password, email} = getLocalStorageItem("signedUserInfo") || ""
+        const {name, password, email} = this.signedUser
 
         return `
             <section class="profile">

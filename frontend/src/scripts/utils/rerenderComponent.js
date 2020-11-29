@@ -1,4 +1,6 @@
 export default async function rerenderComponent(component, DOMElement){
-    document.querySelector(DOMElement).innerHTML = await component.render()
-    await component.afterRender()
+    const Component = new component()
+
+    document.querySelector(DOMElement).innerHTML = await Component.render()
+    await Component.afterRender()
 }
