@@ -1,28 +1,45 @@
+import Dialog from "../components/Dialog"
+import History from "../utils/History"
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageRequests"
 import { initiateMaterialMultipleButtons, initiateMaterialRadioButtons, initiateMaterialTabs, initiateMaterialTextField } from "../utils/materialIoScripts"
-import protectedRoute from "../utils/protectedRoute"
+import {redirectUnauthenticatedUser} from "../utils/protectedRoute"
 import {capitalize, reduceStringLength} from '../utils/stringMethods'
+
+const history = new History()
 
 export default class Checkout{
 
-    static renderShippingInfoHTML(){
+    static get shippingInfo(){
+        return getLocalStorageItem("shippingInfo") || ""
+    }
+
+    static get paymentInfo(){
+        return getLocalStorageItem("paymentOption") || ""
+    }
+
+    static get cartItems(){
+        return getLocalStorageItem("cartItems") || []
+    }
+    
+    static renderShippingIntoHTML(){
         const placeorder = document.querySelector("#rerenderPlaceholder")
-        placeorder.innerHTML = `
+
+        return placeorder.innerHTML = `
             <article>
                 <span class="generalContentTitle">Shipping</span>
 
                 <div>
-                    <span>${getLocalStorageItem("shippingInfo").address}</span>
-                    <span>${getLocalStorageItem("shippingInfo").city}</span>
-                    <span>${getLocalStorageItem("shippingInfo").postalCode}</span>
-                    <span>${getLocalStorageItem("shippingInfo").country}</span>
+                    <span>${this.shippingInfo.address}</span>
+                    <span>${this.shippingInfo.city}</span>
+                    <span>${this.shippingInfo.postalCode}</span>
+                    <span>${this.shippingInfo.country}</span>
                 </div>
             </article>
 
             <article>
                 <span class="generalContentTitle">Payment</span>
 
-                <span>Payment Method: ${capitalize(getLocalStorageItem("paymentOption"))}</span>
+                <span>Payment Method: ${capitalize(this.paymentInfo)}</span>
             </article>
         `
     }
@@ -49,10 +66,26 @@ export default class Checkout{
 
             })
 
-            this.renderShippingInfoHTML()
+            this.renderShippingIntoHTML()
 
         })
 
+        if(this.shippingInfo){
+            this.handleChangeMaterialCurrentActiveTab(materialTab, 1)
+        }
+        
+        if(this.shippingInfo && this.paymentInfo){
+            this.handleChangeMaterialCurrentActiveTab(materialTab, 2)
+        }
+
+    }
+
+    static handleFinishPlaceOrder(){
+        const placeOrderButton = document.querySelector("#placeOrder")
+        
+        placeOrderButton.addEventListener("click", () => {
+            if(!this.shippingInfo && !this.paymentInfo) return Dialog.instantiateMaterialDialog().open()
+        })
     }
 
     static handleFormsValues(materialTab){
@@ -94,15 +127,29 @@ export default class Checkout{
         this.handleActivateMaterialTabs(materialTab)
 
         this.handleFormsValues(materialTab)
+
+        this.handleFinishPlaceOrder()
+
+        Dialog.insertMaterialDialogIntoDOM(
+            document.querySelector("#dialogContainer"),
+            "Please, fill shipping and payment informations",
+            1,
+            "Okay"
+        )
     }
 
     static render(){
 
-        protectedRoute()
+        redirectUnauthenticatedUser()
 
-        const getShippingInfo = getLocalStorageItem("shippingInfo") || ""
-        const getPaymentInfo = getLocalStorageItem("paymentOption") || ""
+        if(this.cartItems.length === 0) history.push("/cart")
 
+        const sumOfItems = Number(this.cartItems.reduce((acc, value) => acc + value.price * value.qty, 0).toFixed(2))
+        const shippingPrice = Number(sumOfItems > 150 ? 10 : 25)
+        const taxPrice = Number((sumOfItems * 5.5 / 100).toFixed(2))
+        const totalOrderPrice = (sumOfItems + shippingPrice + taxPrice).toFixed(2)
+        
+        
         return `
             <section class="checkout">
             
@@ -165,7 +212,7 @@ export default class Checkout{
                                 <input 
                                     type="text" required 
                                     class="mdc-text-field__input"
-                                    value="${getShippingInfo.address || ""}"
+                                    value="${this.shippingInfo.address}"
                                     aria-labelledby="my-label-id"
                                     aria-describedby="address-helper-text"
                                     aria-controls="address-helper-text"
@@ -192,7 +239,7 @@ export default class Checkout{
                                 <input 
                                     type="text"
                                     id="city"
-                                    value="${getShippingInfo.city || ""}"
+                                    value="${this.shippingInfo.city}"
                                     required 
                                     class="mdc-text-field__input" 
                                     aria-labelledby="my-label-id"
@@ -221,7 +268,7 @@ export default class Checkout{
                                 <input 
                                     type="text"
                                     id="postalCode"
-                                    value="${getShippingInfo.postalCode || ""}"
+                                    value="${this.shippingInfo.postalCode}"
                                     required 
                                     class="mdc-text-field__input" 
                                     aria-labelledby="my-label-id"
@@ -250,7 +297,7 @@ export default class Checkout{
                                 <input 
                                     type="text"
                                     id="country"
-                                    value="${getShippingInfo.country || ""}"
+                                    value="${this.shippingInfo.country}"
                                     required 
                                     class="mdc-text-field__input" 
                                     aria-labelledby="my-label-id"
@@ -293,7 +340,7 @@ export default class Checkout{
                                         required
                                         id="radio-1" 
                                         name="radios" 
-                                        ${getPaymentInfo === "stripe" ? "checked" : false}
+                                        ${this.paymentInfo === "stripe" ? "checked" : false}
                                     >
                                     <div class="mdc-radio__background">
                                         <div class="mdc-radio__outer-circle"></div>
@@ -312,7 +359,7 @@ export default class Checkout{
                                         required
                                         id="radio-2" 
                                         name="radios"
-                                        ${getPaymentInfo === "paypal" ? "checked" : false}
+                                        ${this.paymentInfo === "paypal" ? "checked" : false}
                                     >
                                     <div class="mdc-radio__background">
                                         <div class="mdc-radio__outer-circle"></div>
@@ -334,51 +381,76 @@ export default class Checkout{
                     </section>
 
                     <section id="2" class="checkout__container--placeOrder checkout-section desactivate">
-                        
-                        <div class="shippingInfo">
 
-                            <section id="rerenderPlaceholder">
+                        <div class="holderDiv">
 
-                            </section>
+                            <div class="shippingInfo">
 
-                            <article class="shippingInfo__shoppingCartList">
+                                <section id="rerenderPlaceholder">
 
-                                <article>
-                                    <span class="generalContentTitle">Shopping Cart</span>
-                                    <span>Price</span>
-                                </article>
-                                
-                                ${getLocalStorageItem("cartItems").map(item => 
-                                    `
-                                        <div class="shippingInfo__shoppingCartList--product">
-                                            <img src="${item.image}" alt="${item.name}" />
+                                </section>
 
-                                            <div class="holder">
+                                <article class="shippingInfo__shoppingCartList">
 
-                                                <div class="productInfo">
-                                                    <span>
-                                                        <a href="src/#/product/${item.product}">
-                                                            ${item.name.length > 50 ? reduceStringLength(item.name, item.name.length / 2) : item.name}
-                                                        </a>
-                                                    </span>
-                                                    <span><strong>$${item.price}</strong></span>
+                                    <article>
+                                        <span class="generalContentTitle">Shopping Cart</span>
+                                        <span>Price</span>
+                                    </article>
+                                    
+                                    ${this.cartItems.map(item => 
+                                        `
+                                            <div class="shippingInfo__shoppingCartList--product">
+                                                <img src="${item.image}" alt="${item.name}" />
+
+                                                <div class="holder">
+
+                                                    <div class="productInfo">
+                                                        <span>
+                                                            <a href="src/#/product/${item.product}">
+                                                                ${item.name.length > 50 ? reduceStringLength(item.name, item.name.length / 2) : item.name}
+                                                            </a>
+                                                        </span>
+                                                        <span><strong>$${item.price}</strong></span>
+                                                    </div>
+
+                                                    <span class="quantity">Qty: ${item.qty}</span>
+
                                                 </div>
-
-                                                <span class="quantity">Qty: ${item.qty}</span>
 
                                             </div>
 
-                                        </div>
+                                        `
+                                        ).join(" ")}
 
-                                    `
-                                    ).join(" ")}
+                                </article>
 
-                            </article>
+                            </div>
 
-                        </div>
+                            <div class="placeOrderInfo">
+                                <span class="generalContentTitle">Order Summary</span>
+                                
+                                <article>
+                                    <span>Items:</span> <span>R$${sumOfItems}</span>
+                                </article>
 
-                        <div class="placeOrderInfo">
-                            <h1>Place order part</h1>
+                                <article>
+                                    <span>Shipping:</span> <span>R$${shippingPrice}</span>
+                                </article>
+
+                                <article>
+                                    <span>Tax:</span> <span>R$${taxPrice}</span>
+                                </article>
+
+                                <article class="generalImportantMessage">
+                                    <span>Order Total:</span> <span>R$${totalOrderPrice}</span>
+                                </article>
+
+                                <button type="button" id="placeOrder" class="mdc-button mdc-button--raised">
+                                    <div class="mdc-button__ripple"></div>  
+                                    <span class="mdc-button__label">Place Order</span>
+                                </button>
+                            </div>
+
                         </div>
 
                     </section>
@@ -386,6 +458,10 @@ export default class Checkout{
                 </container>
 
             </section>
+
+            <article id="dialogContainer">
+            
+            </article>
         `
     }
 }

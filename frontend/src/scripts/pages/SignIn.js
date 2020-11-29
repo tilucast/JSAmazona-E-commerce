@@ -3,6 +3,7 @@ import History from "../utils/History"
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageRequests"
 import { initiateMaterialButton, initiateMaterialSnackbar, initiateMaterialTextField, initiateMaterialTextfieldIcon } from "../utils/materialIoScripts"
 import passwordVisibility from "../utils/passwordVisibility"
+import { redirectAuthenticatedUser } from "../utils/protectedRoute"
 
 const redirect = getLocalStorageItem("redirectToPage") || '/'
 const history = new History()
@@ -52,9 +53,8 @@ export default class SignIn{
     }
 
     static render(){
-        if(getLocalStorageItem('signedUserInfo')) {
-            return document.location.hash = "/"
-        }
+        
+        redirectAuthenticatedUser()
 
         return `
             <section class="signIn">

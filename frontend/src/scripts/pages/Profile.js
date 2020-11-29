@@ -1,9 +1,10 @@
+import Dialog from "../components/Dialog"
 import Header from "../components/Header"
 import { api } from "../utils/api"
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageRequests"
 import { initiateMaterialButton, initiateMaterialDialog, initiateMaterialSnackbar, initiateMaterialTextField, initiateMaterialTextfieldIcon } from "../utils/materialIoScripts"
 import passwordVisibility from "../utils/passwordVisibility"
-import protectedRoute from "../utils/protectedRoute"
+import {redirectUnauthenticatedUser} from "../utils/protectedRoute"
 import rerenderComponent from "../utils/rerenderComponent"
 
 export default class Profile{
@@ -18,7 +19,8 @@ export default class Profile{
             try{
 
                 const signedUser = getLocalStorageItem("signedUserInfo")
-                let dialog = initiateMaterialDialog()
+
+                const dialog = Dialog.instantiateMaterialDialog()
                 dialog.open()
 
                 dialog.listen('MDCDialog:closed', async event => {
@@ -60,13 +62,23 @@ export default class Profile{
         const icons = initiateMaterialTextfieldIcon()
         passwordVisibility(icons)
 
-        this.handleUpdateUserInfo()     
+        this.handleUpdateUserInfo()
+
+        Dialog.insertMaterialDialogIntoDOM(
+            document.querySelector("#dialogContainer"),
+            "Update your personal informations?",
+            2,
+            "update",
+            "cancel"
+        )
         
     }
 
     static render(){
 
-        protectedRoute()
+        redirectUnauthenticatedUser()
+
+        const {name, password, email} = getLocalStorageItem("signedUserInfo") || ""
 
         return `
             <section class="profile">
@@ -88,7 +100,7 @@ export default class Profile{
                             <input 
                                 type="text" required
                                 minlength="8"
-                                value="${getLocalStorageItem('signedUserInfo').name}"
+                                value="${name}"
                                 class="mdc-text-field__input" 
                                 aria-labelledby="my-label-id"
                                 aria-describedby="name-helper-text"
@@ -116,7 +128,7 @@ export default class Profile{
                             <input 
                                 type="email"
                                 disabled
-                                value="${getLocalStorageItem('signedUserInfo').email}"
+                                value="${email}"
                                 class="mdc-text-field__input" 
                                 aria-labelledby="my-label-id"
                                 aria-describedby="name-helper-text"
@@ -146,7 +158,7 @@ export default class Profile{
                                 type="password"
                                 minlength="5"
                                 required
-                                value="${getLocalStorageItem("signedUserInfo").password}"
+                                value="${password}"
                                 class="mdc-text-field__input" 
                                 aria-labelledby="my-label-id"
                                 aria-describedby="password-helper-text"
@@ -205,32 +217,9 @@ export default class Profile{
                 </div>
             </div>
 
-            <div class="mdc-dialog">
-                <div class="mdc-dialog__container">
-                    <div 
-                        class="mdc-dialog__surface"
-                        role="alertdialog"
-                        aria-modal="true"
-                        aria-labelledby="my-dialog-title"
-                        aria-describedby="my-dialog-content"
-                    >
-                        <div class="mdc-dialog__content" id="my-dialog-content">
-                            <span>Update your information?</span>
-                        </div>
-                        <div class="mdc-dialog__actions">
-                            <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
-                                <div class="mdc-button__ripple"></div>
-                                <span class="mdc-button__label">Cancel</span>
-                            </button>
-                            <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="update">
-                                <div class="mdc-button__ripple"></div>
-                                <span class="mdc-button__label">Update</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="mdc-dialog__scrim"></div>
-            </div>
+            <article id="dialogContainer">
+            
+            </article>
         `
     }
 }

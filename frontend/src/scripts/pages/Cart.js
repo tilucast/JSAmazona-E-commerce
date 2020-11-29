@@ -86,7 +86,9 @@ export default class Cart{
 
         this.deleteProductCart()
 
-        document.querySelector('#checkoutButton').addEventListener('click', () => {
+        const checkoutButton = document.querySelector('#checkoutButton')
+        
+        checkoutButton && checkoutButton.addEventListener('click', () => {
 
             getLocalStorageItem("signedUserInfo") ? history.push('/checkout') 
                 : (history.push('/signin'), setLocalStorageItem("redirectToPage", "/checkout"))

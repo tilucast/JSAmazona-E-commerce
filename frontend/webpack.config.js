@@ -43,10 +43,17 @@ module.exports = [{
         },
         {
           test: /\.js$/,
-          loader: 'babel-loader',
+          //loader: 'babel-loader',
           /* query: {
             presets: ['@babel/preset-env'],
           }, */
+          use: {
+            loader: 'babel-loader',
+            options: {
+              //presets: ['@babel/preset-env'],
+              //"plugins": [["@babel/plugin-proposal-class-properties", { "loose": true }]]
+            }
+          }
         }
       ]
     },

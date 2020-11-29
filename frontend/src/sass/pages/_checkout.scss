@@ -63,10 +63,21 @@
         }
 
         &--placeOrder{
+            
+            .holderDiv{
+                display: flex;
+                align-items: flex-start;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
             height: 100%;
             width: 100%;
 
             .shippingInfo{
+
+                flex: 1 1 50rem;
+                width: 100%;
 
                 #rerenderPlaceholder article{
                     padding: 1.4rem .8rem;
@@ -109,6 +120,10 @@
                                 width: 100%;
                                 margin-bottom: 1rem;
 
+                                span strong{
+                                    margin-left: 1rem;
+                                }
+
                                 span a{
                                     text-decoration: none;
                                     color: var(--color-text-dark);
@@ -130,7 +145,23 @@
             }
 
             .placeOrderInfo{
+                flex: 0 1 35rem;
 
+                width: 100%;
+                padding: 1.4rem .8rem;
+                margin-bottom: 2rem;
+                border: 2px solid var(--color-text-lighter-gray);
+                border-radius: 8px;
+
+                article{
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                button{
+                    width: 100%;
+                    margin-top: 2rem;
+                }
             }
         }
     }
