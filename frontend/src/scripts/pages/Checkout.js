@@ -1,9 +1,12 @@
 import Dialog from "../components/Dialog"
+import Snackbar from "../components/Snackbar"
 import History from "../utils/History"
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageRequests"
 import { initiateMaterialMultipleButtons, initiateMaterialRadioButtons, initiateMaterialTabs, initiateMaterialTextField } from "../utils/materialIoScripts"
 import {redirectUnauthenticatedUser} from "../utils/protectedRoute"
 import {capitalize, reduceStringLength} from '../utils/stringMethods'
+import {api} from '../utils/api'
+import PaymentButton from "../components/PaymentButton"
 
 const history = new History()
 
@@ -22,6 +25,23 @@ export default class Checkout{
     get cartItems(){
         return getLocalStorageItem("cartItems") || []
     }
+
+    get userInfo(){
+        return getLocalStorageItem("signedUserInfo")
+    }
+
+    get payment(){
+        const sumOfItems = Number(this.cartItems.reduce((acc, value) => acc + value.price * value.qty, 0).toFixed(2))
+        const shippingPrice = Number(sumOfItems > 150 ? 10 : 25)
+        const taxPrice = Number((sumOfItems * 5.5 / 100).toFixed(2))
+        const totalOrderPrice = (sumOfItems + shippingPrice + taxPrice).toFixed(2)
+
+        return [sumOfItems, shippingPrice, taxPrice, totalOrderPrice]
+    }
+
+    x (){
+        console.log("clicked")
+    }
     
     renderShippingIntoHTML(){
         const placeorder = document.querySelector("#rerenderPlaceholder")
@@ -31,17 +51,21 @@ export default class Checkout{
                 <span class="generalContentTitle">Shipping</span>
 
                 <div>
-                    <span>${this.shippingInfo.address}</span>
-                    <span>${this.shippingInfo.city}</span>
-                    <span>${this.shippingInfo.postalCode}</span>
-                    <span>${this.shippingInfo.country}</span>
+                    ${this.shippingInfo && 
+                        `
+                            <span>${this.shippingInfo.address}</span>
+                            <span>${this.shippingInfo.city}</span>
+                            <span>${this.shippingInfo.postalCode}</span>
+                            <span>${this.shippingInfo.country}</span>
+                        `
+                    }
                 </div>
             </article>
 
             <article>
                 <span class="generalContentTitle">Payment</span>
 
-                <span>Payment Method: ${capitalize(this.paymentInfo)}</span>
+                <span>Payment Method: ${capitalize(this.paymentInfo) || ""}</span>
             </article>
         `
     }
@@ -57,6 +81,8 @@ export default class Checkout{
         const sections = Array.from(document.querySelectorAll(".checkout-section"))
 
         materialTab.listen("MDCTabBar:activated", (event) => {
+
+            PaymentButton.instantiateMaterialButtons()
 
             sections.forEach(section => {
                 
@@ -83,11 +109,48 @@ export default class Checkout{
     }
 
     handleFinishPlaceOrder(){
+        PaymentButton.insertButtonIntoDOM(
+            document.querySelector("#paymentButtons"), 
+            "Place Order",
+            this.paymentInfo
+        )
+        PaymentButton.instantiateMaterialButtons()
+        
         const placeOrderButton = document.querySelector("#placeOrder")
         
-        placeOrderButton.addEventListener("click", () => {
-            if(!this.shippingInfo && !this.paymentInfo) return Dialog.instantiateMaterialDialog().open()
+        placeOrderButton.addEventListener("click", async () => {
+            if(!this.shippingInfo || !this.paymentInfo) 
+                return Dialog.instantiateMaterialDialog().open() 
+
+            try{
+
+                const [itemsPrice, shippingPrice, taxPrice, totalPrice] = this.payment
+
+                const order = await api.post("/api/orders", {
+                    orderItems: this.cartItems, 
+                    user: this.userInfo._id,
+                    shipping: this.shippingInfo,
+                    payment: {paymentMethod: this.paymentInfo},
+                    itemsPrice, shippingPrice, taxPrice, totalPrice
+                }, {headers: {'auth-token': this.userInfo.token} });
+
+                localStorage.removeItem("cartItems")
+                localStorage.removeItem("shippingInfo")
+                localStorage.removeItem("paymentOption")
+
+                history.push(`/order/${order.data._id}`)
+
+            }catch(error){
+                console.log(error.response.data.message.errors)
+                
+                Snackbar.instantiateMaterialSnackbar().open()
+                Snackbar.instantiateMaterialSnackbar().labelText = "An error has occurred. Try again later."
+            }
+
+            
+
         })
+
     }
 
     handleFormsValues(materialTab){
@@ -120,11 +183,12 @@ export default class Checkout{
 
     afterRender(){
 
-        initiateMaterialMultipleButtons()
         initiateMaterialTextField()
         const materialTab = initiateMaterialTabs()
 
         const [form, radios] = initiateMaterialRadioButtons()
+
+        PaymentButton.instantiateMaterialButtons()
 
         this.handleActivateMaterialTabs(materialTab)
 
@@ -138,6 +202,10 @@ export default class Checkout{
             1,
             "Okay"
         )
+
+        Snackbar.insertMaterialSnackbarIntoDOM(
+            document.querySelector("#snackbarContainer")
+        )
     }
 
     render(){
@@ -146,10 +214,7 @@ export default class Checkout{
 
         if(this.cartItems.length === 0) history.push("/cart")
 
-        const sumOfItems = Number(this.cartItems.reduce((acc, value) => acc + value.price * value.qty, 0).toFixed(2))
-        const shippingPrice = Number(sumOfItems > 150 ? 10 : 25)
-        const taxPrice = Number((sumOfItems * 5.5 / 100).toFixed(2))
-        const totalOrderPrice = (sumOfItems + shippingPrice + taxPrice).toFixed(2)
+        const [sumOfItems, shippingPrice, taxPrice, totalOrderPrice] = this.payment
         
         
         return `
@@ -214,7 +279,7 @@ export default class Checkout{
                                 <input 
                                     type="text" required 
                                     class="mdc-text-field__input"
-                                    value="${this.shippingInfo.address}"
+                                    value="${this.shippingInfo.address || ""}"
                                     aria-labelledby="my-label-id"
                                     aria-describedby="address-helper-text"
                                     aria-controls="address-helper-text"
@@ -241,7 +306,7 @@ export default class Checkout{
                                 <input 
                                     type="text"
                                     id="city"
-                                    value="${this.shippingInfo.city}"
+                                    value="${this.shippingInfo.city || ""}"
                                     required 
                                     class="mdc-text-field__input" 
                                     aria-labelledby="my-label-id"
@@ -270,7 +335,7 @@ export default class Checkout{
                                 <input 
                                     type="text"
                                     id="postalCode"
-                                    value="${this.shippingInfo.postalCode}"
+                                    value="${this.shippingInfo.postalCode || ""}"
                                     required 
                                     class="mdc-text-field__input" 
                                     aria-labelledby="my-label-id"
@@ -299,7 +364,7 @@ export default class Checkout{
                                 <input 
                                     type="text"
                                     id="country"
-                                    value="${this.shippingInfo.country}"
+                                    value="${this.shippingInfo.country || ""}"
                                     required 
                                     class="mdc-text-field__input" 
                                     aria-labelledby="my-label-id"
@@ -447,10 +512,10 @@ export default class Checkout{
                                     <span>Order Total:</span> <span>R$${totalOrderPrice}</span>
                                 </article>
 
-                                <button type="button" id="placeOrder" class="mdc-button mdc-button--raised">
-                                    <div class="mdc-button__ripple"></div>  
-                                    <span class="mdc-button__label">Place Order</span>
-                                </button>
+                                <section id="paymentButtons">
+                                
+                                </section>
+
                             </div>
 
                         </div>
@@ -462,6 +527,10 @@ export default class Checkout{
             </section>
 
             <article id="dialogContainer">
+            
+            </article>
+
+            <article id="snackbarContainer">
             
             </article>
         `

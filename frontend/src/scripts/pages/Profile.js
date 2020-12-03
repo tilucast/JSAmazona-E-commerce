@@ -1,5 +1,6 @@
 import Dialog from "../components/Dialog"
 import Header from "../components/Header"
+import Snackbar from "../components/Snackbar"
 import { api } from "../utils/api"
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageRequests"
 import { initiateMaterialButton, initiateMaterialDialog, initiateMaterialSnackbar, initiateMaterialTextField, initiateMaterialTextfieldIcon } from "../utils/materialIoScripts"
@@ -55,8 +56,8 @@ export default class Profile{
 
             }catch(error){
 
-                initiateMaterialSnackbar().open()
-                initiateMaterialSnackbar().labelText = "An error occurred. Try again later."
+                Snackbar.instantiateMaterialSnackbar().open()
+                Snackbar.instantiateMaterialSnackbar().labelText = "An error occurred. Try again later."
             }
         })
     }
@@ -76,6 +77,10 @@ export default class Profile{
             2,
             "update",
             "cancel"
+        )
+
+        Snackbar.insertMaterialSnackbarIntoDOM(
+            document.querySelector("#snackbarContainer")
         )
         
     }
@@ -205,25 +210,11 @@ export default class Profile{
 
             </section>
 
-            <div class="mdc-snackbar">
-                <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
-                    <div class="mdc-snackbar__label" aria-atomic="false">
-                        
-                    </div>
-                    <div class="mdc-snackbar__actions" aria-atomic="true">
-                    <button type="button" class="mdc-button mdc-snackbar__action">
-                        <div class="mdc-button__ripple"></div>
-                        <span class="mdc-button__label">
-                            <span class="material-icons">
-                                close
-                            </span>
-                        </span>
-                    </button>
-                    </div>
-                </div>
-            </div>
-
             <article id="dialogContainer">
+            
+            </article>
+
+            <article id="snackbarContainer">
             
             </article>
         `
