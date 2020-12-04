@@ -1,10 +1,5 @@
-const { initiateMaterialMultipleButtons } = require("../utils/materialIoScripts");
-
 export default {
-    instantiateMaterialButtons(){
-        return initiateMaterialMultipleButtons()
-    },
-
+    
     insertButtonIntoDOM(DOMElement, buttonMessage, paymentInfo){
         return DOMElement.innerHTML =   `
             ${paymentInfo === "stripe" ? `
@@ -24,7 +19,29 @@ export default {
         `                           
     },
 
-    renderPaypalButtons(paymentInfo){
-        if(paymentInfo === "paypal") return paypal.Buttons().render('#paypalButton')
+    renderPaypalButtons(paymentInfo, totalPrice){
+        if(paymentInfo === "paypal") return paypal.Buttons({
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: totalPrice
+                        }
+                    }]
+                })
+            },
+            onApprove: function(data, actions){
+                return actions.order.capture().then(function(details){
+                    alert("Transaction completed.")
+                })
+            }
+        }).render(
+            '#paypalButton',
+            
+        )
+    },
+
+    place(){
+        return document.querySelector("#placeOrder")
     }
 }

@@ -38,10 +38,6 @@ export default class Checkout{
 
         return [sumOfItems, shippingPrice, taxPrice, totalOrderPrice]
     }
-
-    x (){
-        console.log("clicked")
-    }
     
     renderShippingIntoHTML(){
         const placeorder = document.querySelector("#rerenderPlaceholder")
@@ -82,7 +78,16 @@ export default class Checkout{
 
         materialTab.listen("MDCTabBar:activated", (event) => {
 
-            PaymentButton.instantiateMaterialButtons()
+            PaymentButton.insertButtonIntoDOM(
+                document.querySelector("#paymentButtons"), 
+                "Place Order",
+                this.paymentInfo
+            )
+
+
+            this.handleFinishPlaceOrder()
+
+            initiateMaterialMultipleButtons()
 
             sections.forEach(section => {
                 
@@ -109,16 +114,10 @@ export default class Checkout{
     }
 
     handleFinishPlaceOrder(){
-        PaymentButton.insertButtonIntoDOM(
-            document.querySelector("#paymentButtons"), 
-            "Place Order",
-            this.paymentInfo
-        )
-        PaymentButton.instantiateMaterialButtons()
+
+        PaymentButton.renderPaypalButtons(this.paymentInfo, this.payment[3])
         
-        const placeOrderButton = document.querySelector("#placeOrder")
-        
-        placeOrderButton.addEventListener("click", async () => {
+        PaymentButton.place().addEventListener("click", async () => {
             if(!this.shippingInfo || !this.paymentInfo) 
                 return Dialog.instantiateMaterialDialog().open() 
 
@@ -147,10 +146,20 @@ export default class Checkout{
                 Snackbar.instantiateMaterialSnackbar().labelText = "An error has occurred. Try again later."
             }
 
-            
-
         })
 
+    }
+
+    async handlePaypalPayment(){
+
+        try{
+
+            const clientId = await api.get("/api/orders/paypal/clientId", 
+                {headers: {'auth-token': this.userInfo.token}})
+
+        }catch(error){
+            console.error(error)
+        }
     }
 
     handleFormsValues(materialTab){
@@ -184,17 +193,16 @@ export default class Checkout{
     afterRender(){
 
         initiateMaterialTextField()
+
         const materialTab = initiateMaterialTabs()
 
         const [form, radios] = initiateMaterialRadioButtons()
 
-        PaymentButton.instantiateMaterialButtons()
+        initiateMaterialMultipleButtons()
 
         this.handleActivateMaterialTabs(materialTab)
 
         this.handleFormsValues(materialTab)
-
-        this.handleFinishPlaceOrder()
 
         Dialog.insertMaterialDialogIntoDOM(
             document.querySelector("#dialogContainer"),
@@ -206,16 +214,18 @@ export default class Checkout{
         Snackbar.insertMaterialSnackbarIntoDOM(
             document.querySelector("#snackbarContainer")
         )
+
     }
 
     render(){
+
+        this.handlePaypalPayment()
 
         redirectUnauthenticatedUser()
 
         if(this.cartItems.length === 0) history.push("/cart")
 
         const [sumOfItems, shippingPrice, taxPrice, totalOrderPrice] = this.payment
-        
         
         return `
             <section class="checkout">

@@ -1,4 +1,4 @@
-import {Request, Response, Router} from 'express'
+import {Router} from 'express'
 import OrderController from './controllers/OrderController'
 import ProductsController from './controllers/ProductsController'
 import UserController from './controllers/UserController'
