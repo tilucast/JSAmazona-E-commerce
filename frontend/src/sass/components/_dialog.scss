@@ -5,3 +5,12 @@
 .mdc-dialog__content{
     font-size: 1.6rem;
 }
+
+.mdc-dialog__container{
+    z-index: 2147483647;
+}
+
+.mdc-dialog__scrim{
+    z-index: 2147483646;
+    position: absolute;
+}

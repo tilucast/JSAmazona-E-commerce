@@ -42,10 +42,11 @@ export default class Cart{
                 let cartItems = this.cartItems
 
                 const filteredCart = cartItems.filter(product => {
-                   return product.product !== Number(button.dataset.value)
+                   return product.product !== String(button.dataset.value)
                 })
 
-                filteredCart.length === 0 ? localStorage.removeItem('cartItems') : setLocalStorageItem('cartItems', filteredCart) 
+                filteredCart.length === 0 ? localStorage.removeItem('cartItems') 
+                    : setLocalStorageItem('cartItems', filteredCart) 
                 
                 if(parseRequestUrl().id == button.dataset.value){
                     history.push('/cart')
@@ -84,6 +85,7 @@ export default class Cart{
     afterRender(){
         
         const selects = initiateMaterialSelect()
+
         initiateMaterialMultipleButtons()
         
         this.handleSelectStateChange(selects)

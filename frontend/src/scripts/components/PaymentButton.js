@@ -19,25 +19,9 @@ export default {
         `                           
     },
 
-    renderPaypalButtons(paymentInfo, totalPrice){
-        if(paymentInfo === "paypal") return paypal.Buttons({
-            createOrder: function(data, actions) {
-                return actions.order.create({
-                    purchase_units: [{
-                        amount: {
-                            value: totalPrice
-                        }
-                    }]
-                })
-            },
-            onApprove: function(data, actions){
-                return actions.order.capture().then(function(details){
-                    alert("Transaction completed.")
-                })
-            }
-        }).render(
+    renderPaypalButtons(paymentInfo, paypalConfig){
+        if(paymentInfo === "paypal") return paypal.Buttons(paypalConfig).render(
             '#paypalButton',
-            
         )
     },
 

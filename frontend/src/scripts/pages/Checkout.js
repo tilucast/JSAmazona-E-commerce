@@ -2,13 +2,14 @@ import Dialog from "../components/Dialog"
 import Snackbar from "../components/Snackbar"
 import History from "../utils/History"
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageRequests"
-import { initiateMaterialMultipleButtons, initiateMaterialRadioButtons, initiateMaterialTabs, initiateMaterialTextField } from "../utils/materialIoScripts"
+import { initiateMaterialMultipleButtons, initiateMaterialProgressIndicator, initiateMaterialRadioButtons, initiateMaterialTabs, initiateMaterialTextField } from "../utils/materialIoScripts"
 import {redirectUnauthenticatedUser} from "../utils/protectedRoute"
 import {capitalize, reduceStringLength} from '../utils/stringMethods'
-import {api} from '../utils/api'
 import PaymentButton from "../components/PaymentButton"
+import HandlePayment from "../utils/HandlePayment"
 
 const history = new History()
+const handlePayment = new HandlePayment()
 
 export default class Checkout{
 
@@ -115,51 +116,90 @@ export default class Checkout{
 
     handleFinishPlaceOrder(){
 
-        PaymentButton.renderPaypalButtons(this.paymentInfo, this.payment[3])
+        const [itemsPrice, shippingPrice, taxPrice, totalPrice] = this.payment
+
+        const payObject = {
+            orderItems: this.cartItems, 
+            user: this.userInfo._id,
+            shipping: this.shippingInfo,
+            payment: {paymentMethod: this.paymentInfo},
+            itemsPrice, shippingPrice, taxPrice, totalPrice
+        }
+
+        const token = this.userInfo.token
+
+        if(this.shippingInfo && this.paymentInfo){ 
+
+            PaymentButton.renderPaypalButtons(this.paymentInfo, {
+
+                createOrder: function(data, actions) {
+
+                    initiateMaterialProgressIndicator().open()
+
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: totalPrice
+                            }
+                        }]
+                    })
+                },
+                onApprove: function(data, actions){
+                    return actions.order.capture().then(function (details){
+
+                        Dialog.insertMaterialDialogIntoDOM(
+                            document.querySelector("#dialogContainer"),
+                            "Purchase completed successfully.",
+                            1,
+                            "Okay"
+                        )
+
+                        Dialog.instantiateMaterialDialog().open()
+
+                        setTimeout(async () => {
+
+                            await handlePayment.pay(
+                                payObject, token
+                            )
+
+                        }, 2000); 
+
+                        initiateMaterialProgressIndicator().close()
+
+                    }).catch((error) => {
+                        console.log(error)
+
+                        Dialog.insertMaterialDialogIntoDOM(
+                            document.querySelector("#dialogContainer"),
+                            "Order could not be completed /: . Try again.",
+                            1,
+                            "Okay"
+                        )
+
+                        Dialog.instantiateMaterialDialog().open()
+
+                        initiateMaterialProgressIndicator().close()
+
+                    })
+                },
+                onCancel: function(data, actions){
+                    initiateMaterialProgressIndicator().close()
+                }
+            })
+
+        }
         
         PaymentButton.place().addEventListener("click", async () => {
             if(!this.shippingInfo || !this.paymentInfo) 
                 return Dialog.instantiateMaterialDialog().open() 
 
-            try{
-
-                const [itemsPrice, shippingPrice, taxPrice, totalPrice] = this.payment
-
-                const order = await api.post("/api/orders", {
-                    orderItems: this.cartItems, 
-                    user: this.userInfo._id,
-                    shipping: this.shippingInfo,
-                    payment: {paymentMethod: this.paymentInfo},
-                    itemsPrice, shippingPrice, taxPrice, totalPrice
-                }, {headers: {'auth-token': this.userInfo.token} });
-
-                localStorage.removeItem("cartItems")
-                localStorage.removeItem("shippingInfo")
-                localStorage.removeItem("paymentOption")
-
-                history.push(`/order/${order.data._id}`)
-
-            }catch(error){
-                console.log(error.response.data.message.errors)
-                
-                Snackbar.instantiateMaterialSnackbar().open()
-                Snackbar.instantiateMaterialSnackbar().labelText = "An error has occurred. Try again later."
-            }
+            await handlePayment.pay(payObject, token)
 
         })
 
-    }
+        const paypalIframe = document.querySelector("iframe")
+        paypalIframe.style.position = "static"
 
-    async handlePaypalPayment(){
-
-        try{
-
-            const clientId = await api.get("/api/orders/paypal/clientId", 
-                {headers: {'auth-token': this.userInfo.token}})
-
-        }catch(error){
-            console.error(error)
-        }
     }
 
     handleFormsValues(materialTab){
@@ -218,8 +258,6 @@ export default class Checkout{
     }
 
     render(){
-
-        this.handlePaypalPayment()
 
         redirectUnauthenticatedUser()
 
