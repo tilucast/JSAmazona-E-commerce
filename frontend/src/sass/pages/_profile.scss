@@ -3,9 +3,11 @@
     padding: 3rem 2rem;
     display: flex;
     flex-wrap: wrap;
+    gap: 2rem;
 
      &__userInfo{
         flex: 0 1 32rem;
+        align-self: flex-start;
         min-width: 320px;
         border: 2px solid var(--color-text-grayish);
         padding: 2.4rem;
@@ -24,7 +26,51 @@
         }
     }
 
-     &__userHistory{
-         flex: 1 1 50rem;
-     }
+    &__userHistory{
+        flex: 1 1 50rem;
+
+        tr:nth-child(even){
+            background-color: var(--color-text-lighter-gray2);
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+
+            thead{
+
+                tr{
+
+                    td{
+                        color: var(--color-text-grayish);
+                        text-align: center;
+                        
+                    }
+                }
+
+            }
+
+            tbody{
+
+                td{
+                    text-align: center;
+                }
+
+                .totalPrice{
+                    font-weight: 600;
+                }
+
+                a{
+                    text-decoration: none;
+                    color: var(--color-text-dark);
+                    transition: all .2s;
+                    font-weight: 600;
+
+                    &:hover{
+                        color: var(--color-link-hover);
+                    }
+                }
+            }
+        }
+    }
 }

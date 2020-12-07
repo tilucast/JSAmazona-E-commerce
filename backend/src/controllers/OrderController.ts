@@ -1,6 +1,8 @@
 import {Request, Response} from 'express'
 import OrderModel from '../models/OrderModel'
 import config from '../utils/config'
+import OrdersView from '../views/OrdersView'
+import mongoose from 'mongoose'
 
 export default class OrderController{
     
@@ -21,35 +23,37 @@ export default class OrderController{
         }catch(error){
             console.error(error)
 
-            return response.status(401).json({message: error})
+            return response.status(400).json({message: error})
         }
     }
 
     async show(request: Request, response: Response){
+        const {id} = request.headers
+
         try{
 
-            const orders = await OrderModel.find()
-
-            return response.status(200).json(orders)
+            const orders = await OrderModel.find({user: id})
             
+            return response.status(200).json(OrdersView.renderMany(orders))
+
         }catch(error){
             console.error(error)
 
-            return response.status(401).json({message: error})
+            return response.status(400).json({message: error})
         }
     }
 
     async index(request: Request, response: Response){
         try{
 
-            const orders = await OrderModel.findById(request.params.id)
+            const order = await OrderModel.findById(request.params.id)
 
-            return response.status(200).json(orders)
+            return response.status(200).json(OrdersView.render(order!))
             
         }catch(error){
             console.error(error)
 
-            return response.status(401).json({message: error})
+            return response.status(400).json({message: error})
         }
     }
 

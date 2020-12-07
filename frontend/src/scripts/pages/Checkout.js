@@ -164,10 +164,12 @@ export default class Checkout{
 
                         }, 2000); 
 
+                        console.log(data)
+
                         initiateMaterialProgressIndicator().close()
 
                     }).catch((error) => {
-                        console.log(error)
+                        console.error(error)
 
                         Dialog.insertMaterialDialogIntoDOM(
                             document.querySelector("#dialogContainer"),
@@ -198,7 +200,7 @@ export default class Checkout{
         })
 
         const paypalIframe = document.querySelector("iframe")
-        paypalIframe.style.position = "static"
+        paypalIframe && (paypalIframe.style.position = "static")
 
     }
 

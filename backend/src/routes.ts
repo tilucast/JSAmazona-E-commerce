@@ -22,8 +22,8 @@ router.put("/api/update-user/:_id", isAuth, userController.update)
 router.post("/api/user-signin", userController.signin)
 
 router.post("/api/orders", isAuth, orderController.create)
-router.get("/api/orders", orderController.show)
-router.get("/api/orders/:id", orderController.index)
+router.get("/api/orders", isAuth, orderController.show)
+router.get("/api/orders/:id", isAuth, orderController.index)
 router.get("/api/orders/paypal/clientId", isAuth, orderController.paypal)
 
 export default router

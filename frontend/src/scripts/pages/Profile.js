@@ -3,10 +3,11 @@ import Header from "../components/Header"
 import Snackbar from "../components/Snackbar"
 import { api } from "../utils/api"
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageRequests"
-import { initiateMaterialButton, initiateMaterialDialog, initiateMaterialSnackbar, initiateMaterialTextField, initiateMaterialTextfieldIcon } from "../utils/materialIoScripts"
+import { initiateMaterialButton, initiateMaterialSnackbar, initiateMaterialTextField, initiateMaterialTextfieldIcon } from "../utils/materialIoScripts"
 import passwordVisibility from "../utils/passwordVisibility"
 import {redirectUnauthenticatedUser} from "../utils/protectedRoute"
 import rerenderComponent from "../utils/rerenderComponent"
+import {format} from 'date-fns'
 
 export default class Profile{
 
@@ -14,6 +15,22 @@ export default class Profile{
 
     get signedUser(){
         return getLocalStorageItem("signedUserInfo") || []
+    }
+
+    async ordersData(){
+        try{
+
+            const {data} = await api.get(`/api/orders`, 
+                {headers: {'auth-token': this.signedUser.token, id: this.signedUser._id}}
+            )
+
+
+            console.log(data)
+            return data
+
+        }catch(error){
+            console.error(error.response)
+        }
     }
 
     handleUpdateUserInfo(){
@@ -85,9 +102,11 @@ export default class Profile{
         
     }
 
-    render(){
+    async render(){
 
         redirectUnauthenticatedUser()
+
+        const orderData = await this.ordersData()
 
         const {name, password, email} = this.signedUser
 
@@ -205,7 +224,61 @@ export default class Profile{
                 </div>
 
                 <div class="profile__userHistory">
-                    <h1>Your boughts history</h1>
+                    ${orderData.length ? 
+                        `
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th><strong>ID</strong></th>
+                                        <th><strong>Date</strong></th>
+                                        <th><strong>Total</strong></th>
+                                        <th><strong>Paid</strong></th>
+                                        <th><strong>Delivered</strong></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    ${orderData.map(({_id, createdAt, totalPrice, isPaid, isDelivered}) => `
+
+                                        <tr>
+                                            <td><a href="src/#/order/${_id}">${_id}</a></td>
+                                            <td>${format(new Date(createdAt), "MM/dd/yyyy - H:mm:SS") }</td>
+                                            <td class="totalPrice">${totalPrice}</td>
+                                            <td>
+                                            ${
+                                                isPaid ? `
+                                                    <span class="material-icons success">
+                                                        done_all
+                                                    </span>
+                                                ` 
+                                                : `
+                                                    <span class="material-icons error">
+                                                        close
+                                                    </span>
+                                                `
+                                            }
+                                            </td>
+                                            <td>
+                                            ${
+                                                isDelivered ? `
+                                                    <span class="material-icons success">
+                                                        done_all
+                                                    </span>
+                                                ` 
+                                                : `
+                                                    <span class="material-icons error">
+                                                        close
+                                                    </span>
+                                                `
+                                            }
+                                            </td>
+                                        </tr>
+
+                                    `).join(" ")}
+                                </tbody>
+                            </table>
+                        `
+                    : `<span>Nothing to show here.</span>`}
                 </div>
 
             </section>

@@ -1,8 +1,8 @@
 import {parseRequestUrl} from '../utils/parseRequestUrl.js'
-import { getProduct } from '../utils/serverRequests.js'
 import Rating from '../components/Rating.js'
 import { initiateMaterialButton } from '../utils/materialIoScripts.js'
 import History from '../utils/History.js'
+import { api } from "../utils/api"
 
 const history = new History()
 
@@ -10,26 +10,41 @@ export default class Product{
 
     constructor(){}
 
+    get productId(){
+        return parseRequestUrl()
+    }
+
+    async getProduct(id){
+        
+        try{
+            const response = await api.get(`/api/products/${id}`)
+    
+            return response.data
+    
+        }catch(error){
+            
+            
+        }
+    }
+
     afterRender(){
 
-        const parseRequest = parseRequestUrl()
+        const cartButton = document.querySelector('#cartButton')
 
-        initiateMaterialButton()
-
-        document.querySelector('#cartButton').addEventListener('click', () => {
-            history.push(`/cart/${parseRequest.id}`)
-        })
+        cartButton && (initiateMaterialButton(), cartButton.addEventListener('click', () => {
+            history.push(`/cart/${this.productId.id}`)
+        }))
 
     }
 
     async render() {    
 
-        try{
+        const product = await this.getProduct(this.productId.id)
 
-            const request = parseRequestUrl()
+        if(!product){
+            return `<h1>Product not found :/</h1>`
 
-            const product = await getProduct(request.id)
-
+        } else{
             return `
 
                 <section class="mainContent__singleProduct" >
@@ -78,9 +93,6 @@ export default class Product{
                 </section>
 
             `
-
-        }catch(error){
-            return `<h1>${error.message}</h1>`
         }
 
     }

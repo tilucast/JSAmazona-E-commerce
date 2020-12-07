@@ -1,10 +1,10 @@
 import { initiateMaterialMultipleButtons, initiateMaterialSelect} from '../utils/materialIoScripts.js'
 import {parseRequestUrl} from '../utils/parseRequestUrl.js'
 import rerenderComponent from '../utils/rerenderComponent.js'
-import {getProduct} from '../utils/serverRequests.js'
 import {getLocalStorageItem, setLocalStorageItem} from '../utils/localStorageRequests.js'
 import History from '../utils/History.js'
 import { reduceStringLength } from '../utils/stringMethods.js'
+import { api } from "../utils/api"
 
 const history = new History()
 
@@ -14,6 +14,23 @@ export default class Cart{
 
     get cartItems(){
         return getLocalStorageItem("cartItems") || []
+    }
+
+    get productId(){
+        return parseRequestUrl()
+    }
+
+    async getProduct(id){
+        
+        try{
+            const response = await api.get(`/api/products/${id}`)
+    
+            return response.data
+    
+        }catch(error){
+            console.error(error)
+            
+        }
     }
 
     handleSelectStateChange(selects){
@@ -108,17 +125,15 @@ export default class Cart{
 
     async render(){
 
-        const parseRequest = parseRequestUrl()
-
-        if(parseRequest.id){
-            const product = await getProduct(parseRequest.id)
+        if(this.productId.id){
+            const {_id, name, image, price, countInStock} = await this.getProduct(this.productId.id)
 
             this.addToCart({
-                product: product._id,
-                name: product.name,
-                image: product.image,
-                price: product.price,
-                countInStock: product.countInStock,
+                product: _id,
+                name,
+                image,
+                price,
+                countInStock,
                 qty: 1
             })
 

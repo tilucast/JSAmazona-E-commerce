@@ -8,7 +8,7 @@ export interface IOrderSchema extends Document{
             qty: number,
             product: mongoose.Schema.Types.ObjectId
     }[],
-    user: mongoose.Schema.Types.ObjectId,
+    user: mongoose.Schema.Types.ObjectId | string | string[] | undefined,
     shipping: {
         address:  string,
         city:  string,
@@ -30,7 +30,9 @@ export interface IOrderSchema extends Document{
     isPaid: boolean,
     paidAt: Date,
     isDelivered: boolean,
-    deliveredAt: Date
+    deliveredAt: Date,
+    createdAt: Date, 
+    updatedAt: Date
 }
 
 export interface OrderInterface{

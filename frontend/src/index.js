@@ -10,6 +10,7 @@ import SignUp from './scripts/pages/SignUp.js'
 import Profile from './scripts/pages/Profile.js'
 import Checkout from './scripts/pages/Checkout.js'
 import ProgressIndicator from './scripts/components/ProgressIndicator.js'
+import Order from './scripts/pages/Order.js'
 
 const progressIndicator = new ProgressIndicator()
 const header = new Header()
@@ -22,7 +23,8 @@ const routes = {
     "/signin": SignIn,
     "/signup": SignUp,
     "/profile": Profile,
-    "/checkout": Checkout
+    "/checkout": Checkout,
+    "/order/:id": Order
 }
 
 const router = async () => {
