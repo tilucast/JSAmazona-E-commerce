@@ -21,7 +21,7 @@ export default class Header{
 
     render(){
 
-        const {_id, name} = this.signedUser
+        const {_id, name, isAdmin} = this.signedUser
         
         return `
             <div class="header__menu">
@@ -35,6 +35,8 @@ export default class Header{
                 ${name ? `<a href="src/#/profile">${name}</a>` : '<a href="src/#/signin">Sign In</a>'}
                 |
                 <a href="src/#/cart">Cart</a>
+
+                ${isAdmin && ` | <a href="src/#/dashboard">Dashboard</a>`}
 
                 ${this.signedUser ? 
                    `

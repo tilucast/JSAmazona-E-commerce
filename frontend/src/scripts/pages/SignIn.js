@@ -1,4 +1,5 @@
 import { api } from "../utils/api"
+import changeMainComponentGridLayout from "../utils/changeMainComponent"
 import History from "../utils/History"
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageRequests"
 import { initiateMaterialButton, initiateMaterialSnackbar, initiateMaterialTextField, initiateMaterialTextfieldIcon } from "../utils/materialIoScripts"
@@ -60,6 +61,8 @@ export default class SignIn{
     render(){
         
         redirectAuthenticatedUser()
+
+        changeMainComponentGridLayout()
 
         return `
             <section class="signIn">

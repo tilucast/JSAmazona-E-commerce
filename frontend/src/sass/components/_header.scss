@@ -29,6 +29,10 @@
         justify-content: space-around;
 
         min-width: 200px;
+
+        a, span:not(:last-child){
+            margin-right: 1rem;
+        }
     }
 
     a{

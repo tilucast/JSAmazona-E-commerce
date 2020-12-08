@@ -7,6 +7,7 @@ import {redirectUnauthenticatedUser} from "../utils/protectedRoute"
 import {capitalize, reduceStringLength} from '../utils/stringMethods'
 import PaymentButton from "../components/PaymentButton"
 import HandlePayment from "../utils/HandlePayment"
+import changeMainComponentGridLayout from "../utils/changeMainComponent"
 
 const history = new History()
 const handlePayment = new HandlePayment()
@@ -262,6 +263,8 @@ export default class Checkout{
     render(){
 
         redirectUnauthenticatedUser()
+
+        changeMainComponentGridLayout()
 
         if(this.cartItems.length === 0) history.push("/cart")
 

@@ -3,6 +3,7 @@ import Rating from '../components/Rating.js'
 import { initiateMaterialButton } from '../utils/materialIoScripts.js'
 import History from '../utils/History.js'
 import { api } from "../utils/api"
+import changeMainComponentGridLayout from '../utils/changeMainComponent.js'
 
 const history = new History()
 
@@ -38,6 +39,8 @@ export default class Product{
     }
 
     async render() {    
+
+        changeMainComponentGridLayout()
 
         const product = await this.getProduct(this.productId.id)
 

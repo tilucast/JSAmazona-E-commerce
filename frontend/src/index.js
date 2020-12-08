@@ -11,6 +11,7 @@ import Profile from './scripts/pages/Profile.js'
 import Checkout from './scripts/pages/Checkout.js'
 import ProgressIndicator from './scripts/components/ProgressIndicator.js'
 import Order from './scripts/pages/Order.js'
+import Dashboard from './scripts/pages/Dashboard.js'
 
 const progressIndicator = new ProgressIndicator()
 const header = new Header()
@@ -24,7 +25,8 @@ const routes = {
     "/signup": SignUp,
     "/profile": Profile,
     "/checkout": Checkout,
-    "/order/:id": Order
+    "/order/:id": Order,
+    "/dashboard": Dashboard
 }
 
 const router = async () => {

@@ -1,4 +1,5 @@
 import { api } from "../utils/api"
+import changeMainComponentGridLayout from "../utils/changeMainComponent"
 import { initiateMaterialButton, initiateMaterialSnackbar, initiateMaterialTextField } from "../utils/materialIoScripts"
 
 export default class SignUp{
@@ -44,6 +45,9 @@ export default class SignUp{
     }
 
     render(){
+
+        changeMainComponentGridLayout()
+
         return `
             <section class="signUp">
                 <div class="signUp__box">

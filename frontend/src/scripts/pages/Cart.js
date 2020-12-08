@@ -5,6 +5,7 @@ import {getLocalStorageItem, setLocalStorageItem} from '../utils/localStorageReq
 import History from '../utils/History.js'
 import { reduceStringLength } from '../utils/stringMethods.js'
 import { api } from "../utils/api"
+import changeMainComponentGridLayout from '../utils/changeMainComponent.js'
 
 const history = new History()
 
@@ -124,6 +125,8 @@ export default class Cart{
     }
 
     async render(){
+
+        changeMainComponentGridLayout()
 
         if(this.productId.id){
             const {_id, name, image, price, countInStock} = await this.getProduct(this.productId.id)

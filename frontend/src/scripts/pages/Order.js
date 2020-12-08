@@ -4,6 +4,7 @@ import { redirectUnauthenticatedUser } from '../utils/protectedRoute'
 import { getLocalStorageItem } from '../utils/localStorageRequests'
 import History from '../utils/History'
 import { capitalize, reduceStringLength } from '../utils/stringMethods'
+import changeMainComponentGridLayout from '../utils/changeMainComponent'
 //import {format} from 'date-fns'
 
 const history = new History()
@@ -52,6 +53,8 @@ export default class Order{
     async render(){
 
         redirectUnauthenticatedUser()
+
+        changeMainComponentGridLayout()
 
         this.afterRender()
 

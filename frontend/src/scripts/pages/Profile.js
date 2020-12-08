@@ -8,6 +8,7 @@ import passwordVisibility from "../utils/passwordVisibility"
 import {redirectUnauthenticatedUser} from "../utils/protectedRoute"
 import rerenderComponent from "../utils/rerenderComponent"
 import {format} from 'date-fns'
+import changeMainComponentGridLayout from "../utils/changeMainComponent"
 
 export default class Profile{
 
@@ -105,6 +106,8 @@ export default class Profile{
     async render(){
 
         redirectUnauthenticatedUser()
+
+        changeMainComponentGridLayout()
 
         const orderData = await this.ordersData()
 

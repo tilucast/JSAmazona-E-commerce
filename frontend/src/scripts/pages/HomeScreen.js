@@ -1,5 +1,6 @@
 import Rating from '../components/Rating'
 import {api} from '../utils/api.js'
+import changeMainComponentGridLayout from '../utils/changeMainComponent'
 
 export default class HomeScreen{
 
@@ -10,6 +11,8 @@ export default class HomeScreen{
     }
 
     async render (){
+
+        changeMainComponentGridLayout()
 
         const fetchData = await api.get('/api/products')
        
