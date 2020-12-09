@@ -8,6 +8,7 @@ const OrderSchema = new Schema({
             name: {type: String, required: true},
             image: {type: String, required: true},
             price: {type: Number, required: true},
+            category: {type: String, required: true},
             qty: {type: Number, required: true},
             product: {type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true},
         }
@@ -34,7 +35,9 @@ const OrderSchema = new Schema({
     isPaid: {type: Boolean, required: true, default: false},
     paidAt: Date,
     isDelivered: {type: Boolean, required: true, default: false},
-    deliveredAt: Date 
+    deliveredAt: Date,
+    createdAt: Date, 
+    updatedAt: Date
 
 }, {timestamps: true})
 

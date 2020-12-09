@@ -22,7 +22,9 @@ router.put("/api/update-user/:_id", isAuth, userController.update)
 router.post("/api/user-signin", userController.signin)
 
 router.post("/api/orders", isAuth, orderController.create)
+router.put("/api/orders/:_id", isAuth, orderController.update)
 router.get("/api/orders", isAuth, orderController.show)
+router.get("/api/orders/all", isAuth, orderController.getOrders)
 router.get("/api/orders/:id", isAuth, orderController.index)
 router.get("/api/orders/paypal/clientId", isAuth, orderController.paypal)
 

@@ -27,6 +27,25 @@ export default class OrderController{
         }
     }
 
+    async update(request: Request, response: Response){
+        const {_id} = request.params
+        const {orderItems} = request.body
+
+        try{
+
+            const updatedOrder = await OrderModel.updateOne(
+                {_id}, {orderItems}
+            )
+
+            return response.status(201).json(updatedOrder)
+        
+        }catch(error){
+            console.error(error)
+
+            return response.status(400).json({message: error})
+        }
+    }
+
     async show(request: Request, response: Response){
         const {id} = request.headers
 
@@ -59,5 +78,20 @@ export default class OrderController{
 
     async paypal(request: Request, response: Response){
         return response.status(200).json({clientId: config.PAYPAL_SECRET})
+    }
+
+    async getOrders(request: Request, response: Response){
+    
+        try{
+
+            const orders = await OrderModel.find()
+            
+            return response.status(200).json(OrdersView.renderMany(orders))
+
+        }catch(error){
+            console.error(error)
+
+            return response.status(400).json({message: error})
+        }
     }
 }

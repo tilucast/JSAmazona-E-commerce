@@ -129,12 +129,13 @@ export default class Cart{
         changeMainComponentGridLayout()
 
         if(this.productId.id){
-            const {_id, name, image, price, countInStock} = await this.getProduct(this.productId.id)
+            const {_id, name, image, price, category, countInStock} = await this.getProduct(this.productId.id)
 
             this.addToCart({
                 product: _id,
                 name,
                 image,
+                category,
                 price,
                 countInStock,
                 qty: 1

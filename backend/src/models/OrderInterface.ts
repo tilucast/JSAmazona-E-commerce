@@ -5,6 +5,7 @@ export interface IOrderSchema extends Document{
             name: string,
             image: string,
             price: number,
+            category: string,
             qty: number,
             product: mongoose.Schema.Types.ObjectId
     }[],
@@ -40,6 +41,7 @@ export interface OrderInterface{
             name: string,
             image: string,
             price: number,
+            category: string,
             qty: number,
             product: string
     }[],
@@ -65,5 +67,7 @@ export interface OrderInterface{
     isPaid: boolean,
     paidAt: Date,
     isDelivered: boolean,
-    deliveredAt: Date
+    deliveredAt: Date,
+    createdAt: Date, 
+    updatedAt: Date
 }

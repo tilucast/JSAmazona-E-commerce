@@ -36,7 +36,7 @@ export default class Header{
                 |
                 <a href="src/#/cart">Cart</a>
 
-                ${isAdmin && ` | <a href="src/#/dashboard">Dashboard</a>`}
+                ${isAdmin ? ` | <a href="src/#/dashboard">Dashboard</a>` : ""}
 
                 ${this.signedUser ? 
                    `

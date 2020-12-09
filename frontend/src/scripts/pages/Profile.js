@@ -25,8 +25,6 @@ export default class Profile{
                 {headers: {'auth-token': this.signedUser.token, id: this.signedUser._id}}
             )
 
-
-            console.log(data)
             return data
 
         }catch(error){

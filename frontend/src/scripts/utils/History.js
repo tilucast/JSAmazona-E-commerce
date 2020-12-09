@@ -9,7 +9,5 @@ export default class History {
     push(url){
         document.location.hash = url
     }
-
-    
     
 }
