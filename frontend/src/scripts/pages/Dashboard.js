@@ -11,13 +11,27 @@ export default class Dashboard{
     }
 
     handleSidebarAnimation(){
-        const cta = document.getElementById("cta")
+        const ctaClose = document.getElementById("ctaClose")
         const ctaSpan = document.getElementById("ctaSpan")
+        const asideSection = document.querySelector(".asideSection")
         const aside = document.querySelector("aside")
-        
-        cta.addEventListener("click", () => {
-            
-  
+        const cta = document.getElementById("cta")
+
+        ctaSpan.addEventListener("click", () => {
+            aside.classList.remove("open")
+            aside.classList.add("close")
+            aside.style.width = "0vw"
+            asideSection.style.display = "none"
+            ctaSpan.style.display = "none"
+        })
+
+        ctaClose.addEventListener("click", () => {
+            aside.classList.remove("close")
+            aside.classList.add("open")
+            aside.style.width = "30vw"
+            asideSection.style.display = "grid"
+            ctaSpan.style.display = "grid"
+            cta.style.display = "grid"
         })
     }
 
@@ -94,22 +108,27 @@ export default class Dashboard{
         <section class="dashboard">
 
             <aside>
-                <section>
-                    <a href="">Dashboard</a>
-                    <a href="">Orders</a>
-                    <a href="">Products</a>
+                <section class="asideSection">
+                    <a href="src/#/dashboard">Dashboard</a>
+                    <a href="src/#/admin-orders">Orders</a>
+                    <a href="src/#/products">Products</a>
                 </section>
+
+                <cta id="cta" data-open="false">
+                    <span id="ctaSpan" class="material-icons">
+                        skip_previous
+                    </span>
+                </cta>
             </aside>
 
-            <cta id="cta" data-open="false">
-                <span id="ctaSpan" class="material-icons">
-                    keyboard_tab
-                </span>
-            </cta>
-            
+            <cta id="cta2" data-open="false">
+                    <span id="ctaClose" class="material-icons">
+                        skip_next
+                    </span>
+                </cta>
 
             <article class="dashboard__content">
-                <h1 class="generalBiggerTitle">Dashboard</h1>
+                <h1 class="title">Dashboard</h1>
 
                 <section>
                     

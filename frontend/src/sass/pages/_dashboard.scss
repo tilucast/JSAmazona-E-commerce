@@ -1,42 +1,67 @@
 .dashboard{
     display: flex;
+    position: relative;
 
     width: 100%;
     height: 100%;
 
     aside{
-        display: grid;
-        place-items: center;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: absolute;
+        z-index: 100;
 
+        width: 0;
         height: 100%;
-        background-color: var(--color-text-lighter-gray);
-        border-right: 2px solid var(--color-text-dark);
-        padding: 0 2rem;
+        box-shadow: 4px 7px 10px rgba(0,0,0,.4);
+        background-color: var(--color-dark);
 
         section{
-            display: flex;
-            flex-direction: column;
+            display: none;
+            place-items: center;
 
+            height: 100%;
+            width: 100%;
+            
             a{
                 text-decoration: none;
                 font-weight: 500;
-                color: var(--color-text-dark);
+                color: var(--color-text-lighter-gray);
                 font-size: 2rem;
-                margin: 0 0 3rem 0;
-                transition: all .2s;
+                transition: all .3s;
+                position: relative;
 
-                &:hover{
-                    color: var(--color-link-hover);
+                &::after{
+                    content:'';
+                    width: 102%;
+                    height: 100%;
+                    position: absolute;
+                    top:0;
+                    left:0;
+                    border-radius:2px;
+                    background:radial-gradient(circle at 94.02% 88.03%, var(--color-text-lighter), transparent 100%);
+                    opacity:0;
+                    transition:all .5s ease;
+                    z-index: 100;
+                }
+
+                &:hover:after{
+                    opacity: 1;
                 }
                 
             }
+
         }
     }
 
     cta{
-        background-color: var(--color-text-lighter-gray2);
         display: grid;
         place-items: center;
+        position: relative;
+        
+        height: 100%;
+        background-color: var(--color-text-lighter-gray2);
         
         span{
             font-size: 3rem;
@@ -46,6 +71,27 @@
                 color: var(--color-link-hover);
                 cursor: pointer;
             }
+        }
+    }
+
+    #cta{
+        display: none;
+        place-items: center;
+        position: relative;
+        
+        height: 100%;
+        color: var(--color-text-lighter);
+        background-color: var(--color-dark);
+        
+        span{
+            font-size: 3rem;
+            transition: all .4s;
+
+            &:hover{
+                color: var(--color-link-hover);
+                cursor: pointer;
+            }
+
         }
     }
 
@@ -79,16 +125,28 @@
                 min-width: 25rem;
                 text-align: center;
                 border: 2px solid var(--color-text-lighter-gray);
-                border-radius: 8px;
+                border-radius: 6px;
+                overflow: hidden;
+                transition: all .5s;
+                
                 animation: cardsAnimation 1s linear;
+
+                &:hover{
+                    box-shadow: 2px 3px 5px rgba(0,0,0,.4);
+                    border: 2px solid var(--color-text-grayish);
+                }
                 
                 subgroup{
-                    padding: 1rem;
+                    
                     display: flex;
                     align-items:center;
 
+                    background-color: var(--color-background);
+                    padding: 1rem;
+
                     span{
                         margin-right: .7rem;
+                        color: var(--color-text-lighter-gray2);
                     }
 
                     span + span{
@@ -106,7 +164,7 @@
 
             }
 
-            group subgroup{
+            /* group subgroup{
                 background-color: var(--color-light-red);
             }
 
@@ -116,7 +174,7 @@
 
             group + group + group subgroup{
                 background-color: var(--color-light-green);
-            }
+            } */
         }
     }
 
@@ -128,20 +186,11 @@
 }
 
 .open{
-    animation: sideCorno .7s linear;
+    animation: sideCorno .5s linear;
 }
 
 .close{
-    animation: sidePraga .7s linear;
-}
-
-.dashboard{ 
-    @media only screen and (max-width: 900px){
-        .canvasContainer{
-            width: 40rem;
-            height: 20rem;
-        }
-    }
+    animation: sidePraga .5s linear;
 }
 
 @keyframes cardsAnimation{
@@ -177,5 +226,21 @@
     to{
         width: 0;
         
+    }
+}
+
+.dashboard{ 
+    @media only screen and (max-width: 900px){
+        .canvasContainer{
+            width: 40rem;
+            height: 20rem;
+        }
+    }
+
+    @media only screen and (max-width: 715px){
+        .canvasContainer{
+            width: 34rem;
+            height: 17rem;
+        }
     }
 }
