@@ -1,25 +1,20 @@
 import Rating from '../components/Rating'
 import {api} from '../utils/api.js'
 import changeMainComponentGridLayout from '../utils/changeMainComponent'
+import { getDataFromLocalStorage } from '../utils/localStorageRequests'
 
 export default class HomeScreen{
 
     constructor(){}
 
-    afterRender(){
-        
+    async products(){
+        return await api.get('/api/products')
     }
 
-    async render (){
+    async renderProducts(data){
+        const productsPlaceholder = document.getElementById("productsPlaceholder")
 
-        changeMainComponentGridLayout()
-
-        const fetchData = await api.get('/api/products')
-       
-        const data = fetchData.data
-
-        return `
-
+        return productsPlaceholder.innerHTML = `
             <article class="products">
                 ${data.map(({_id, name, category, image, price, 
                     brand, rating, numReviews, countInStock}) => `
@@ -46,6 +41,45 @@ export default class HomeScreen{
                     </div>
                 `).join(' ')}
             </article>
+        `
+    }
+
+    async searchbarValue(value){
+        const {data} = await this.products()
+
+        const products = data.filter(product => {
+            const regex = new RegExp(value, 'i')
+
+            return regex.test(product.name) ? product.name : ""
+        })
+
+        return products
+    }
+
+    async afterRender(){
+
+        let {data} = await this.products()
+
+        this.renderProducts(data)
+
+        const input = document.querySelector("input")
+        input.addEventListener("input", async () => {
+            const productsFound = await this.searchbarValue(getDataFromLocalStorage("inputValue"))
+
+            this.renderProducts(productsFound)
+        })
+        
+    }
+
+    async render (){
+
+        changeMainComponentGridLayout()
+
+        this.afterRender()
+
+        return `
+            <section id="productsPlaceholder"></section>
+            
         `
     }
 }

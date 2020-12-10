@@ -23,7 +23,7 @@
         }
     }
 
-    div + div{
+    div + section + div{
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -53,6 +53,31 @@
 
         &:hover{
             color: var(--color-link-hover);
+        }
+    }
+
+    .searchBar{
+        display: flex;
+        align-items: center;
+
+        span{
+            display: grid;
+            place-items: center;
+
+            width: 50px;
+            height: 34px;
+            background-color: var(--color-icons-gold);
+            border-radius: 6px;
+            transition: all .3s;
+
+            &:hover{
+                color: var(--color-text-dark)
+            }
+        }
+
+        input{
+            font-weight: 600;
+            letter-spacing: 1px;
         }
     }
 }

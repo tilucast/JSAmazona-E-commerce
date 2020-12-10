@@ -1,5 +1,5 @@
 import History from "../utils/History"
-import { getLocalStorageItem } from "../utils/localStorageRequests"
+import { getLocalStorageItem, setDataOnLocalStorage } from "../utils/localStorageRequests"
 
 const history = new History()
 
@@ -17,6 +17,11 @@ export default class Header{
 
             history.push("")
         })
+
+        const input = document.querySelector("input")
+        input.addEventListener("input", function(){
+            setDataOnLocalStorage(this.value)
+        })
     }
 
     render(){
@@ -31,6 +36,13 @@ export default class Header{
                 <a class="header__menu--title" href="src/#/">JS Amazona</a>
             </div>
 
+            <section class="searchBar">
+                <input type="text" placeholder="Search for an item ..." />
+                <span class="material-icons">
+                    search
+                </span>     
+            </section>
+
             <div>
                 ${name ? `<a href="src/#/profile">${name}</a>` : '<a href="src/#/signin">Sign In</a>'}
                 |
@@ -41,9 +53,10 @@ export default class Header{
                 ${this.signedUser ? 
                    `
                    | 
-                   <span id="logoutButton" class="material-icons">
+                    <span id="logoutButton" class="material-icons">
                         exit_to_app
-                    </span> `
+                    </span> 
+                    `
 
                     :
 
