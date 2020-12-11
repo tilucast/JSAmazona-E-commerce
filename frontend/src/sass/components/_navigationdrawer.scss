@@ -1,0 +1,31 @@
+@use "@material/drawer";
+@use "@material/list";
+
+@include drawer.core-styles;
+@include drawer.dismissible-core-styles;
+@include drawer.modal-core-styles;
+@include list.core-styles;
+
+.mdc-drawer{
+    height: auto;
+}
+
+.mdc-drawer--modal{
+    top: 90px;
+    background-color: var(--color-background);
+
+    @include drawer.divider-color("primary");
+    @include drawer.border-color("primary");
+}
+
+.mdc-list-item__text{
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--color-text-lighter-gray2) !important;
+}
+
+.mdc-list-item__graphic{
+    font-size: 2.5rem;
+    color: goldenrod !important;
+}

@@ -163,26 +163,33 @@
                 }
 
             }
-
-            /* group subgroup{
-                background-color: var(--color-light-red);
-            }
-
-            group + group subgroup {
-                background-color: var(--color-light-purple);
-            }
-
-            group + group + group subgroup{
-                background-color: var(--color-light-green);
-            } */
         }
     }
 
-    .canvasContainer{
-        width: 50rem;
-        height: 25rem;
-        margin-top: 5rem;
+    div{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        width: 80%;
+
+        > span{
+            font-size: 2.4rem;
+            letter-spacing: 1px;
+            margin-top: 4rem;
+        }
+
+        .canvasContainer{
+            max-width: 65rem;
+            max-height: 45rem;
+            width: 100%;
+            height: 50%;
+            margin-top: 1rem;
+        }
+
     }
+
+    
 }
 
 .open{
@@ -226,21 +233,5 @@
     to{
         width: 0;
         
-    }
-}
-
-.dashboard{ 
-    @media only screen and (max-width: 900px){
-        .canvasContainer{
-            width: 40rem;
-            height: 20rem;
-        }
-    }
-
-    @media only screen and (max-width: 715px){
-        .canvasContainer{
-            width: 34rem;
-            height: 17rem;
-        }
     }
 }

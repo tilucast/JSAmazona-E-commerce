@@ -3,6 +3,7 @@
     justify-content: space-between;
     align-items: center;
     text-align: center;
+    position: relative;
     
     padding: 2rem 4rem;
     background-color: var(--color-background);
@@ -11,11 +12,16 @@
     &__menu{
         display: flex;
         align-items: center;
-        justify-content: space-around;
         
         height: 5rem;
         min-width: 18rem;
         color: var(--color-text);
+
+        > section{
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
 
         &--title{
             font-weight: bold;
@@ -32,6 +38,10 @@
 
         a, span:not(:last-child){
             margin-right: 1rem;
+        }
+
+        @media only screen and(max-width: 950px){
+            display: none;
         }
     }
 
@@ -79,5 +89,11 @@
             font-weight: 600;
             letter-spacing: 1px;
         }
+    }
+}
+
+@media only screen and(min-width: 949px){
+    #menu{
+        display: none;
     }
 }

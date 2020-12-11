@@ -9,6 +9,8 @@ import {MDCDialog} from '@material/dialog';
 import {MDCTabBar} from '@material/tab-bar';
 import {MDCFormField} from '@material/form-field';
 import {MDCRadio} from '@material/radio';
+import {MDCDrawer} from "@material/drawer";
+import {MDCList} from "@material/list";
 
 export function initiateMaterialButton(){
     const buttonRipple = new MDCRipple(document.querySelector('.mdc-button'))
@@ -80,4 +82,10 @@ export function initiateMaterialRadioButtons(){
     })
 
     return [formField, radioButtons]
+}
+
+export function initiateMaterialNavigationDrawer(){
+    const drawer = MDCDrawer.attachTo(document.querySelector('.mdc-drawer'));
+
+   return drawer
 }

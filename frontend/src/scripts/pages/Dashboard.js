@@ -14,7 +14,7 @@ export default class Dashboard{
         const ctaClose = document.getElementById("ctaClose")
         const ctaSpan = document.getElementById("ctaSpan")
         const asideSection = document.querySelector(".asideSection")
-        const aside = document.querySelector("aside")
+        const aside = document.querySelector("#dashboardAside")
         const cta = document.getElementById("cta")
 
         ctaSpan.addEventListener("click", () => {
@@ -107,7 +107,7 @@ export default class Dashboard{
 
         <section class="dashboard">
 
-            <aside>
+            <aside id="dashboardAside">
                 <section class="asideSection">
                     <a href="src/#/dashboard">Dashboard</a>
                     <a href="src/#/admin-orders">Orders</a>
@@ -168,9 +168,12 @@ export default class Dashboard{
                     
                 </section>
 
-                <article class="canvasContainer">
-                    <canvas id="myChart"></canvas>
-                </article>
+                <div>
+                    <span>Products sold</span>
+                    <article class="canvasContainer">
+                        <canvas id="myChart"></canvas>
+                    </article>
+                </div>
             </article>
 
         </section>
