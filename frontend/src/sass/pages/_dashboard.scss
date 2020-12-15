@@ -4,96 +4,7 @@
 
     width: 100%;
     height: 100%;
-
-    aside{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: absolute;
-        z-index: 100;
-
-        width: 0;
-        height: 100%;
-        box-shadow: 4px 7px 10px rgba(0,0,0,.4);
-        background-color: var(--color-dark);
-
-        section{
-            display: none;
-            place-items: center;
-
-            height: 100%;
-            width: 100%;
-            
-            a{
-                text-decoration: none;
-                font-weight: 500;
-                color: var(--color-text-lighter-gray);
-                font-size: 2rem;
-                transition: all .3s;
-                position: relative;
-
-                &::after{
-                    content:'';
-                    width: 102%;
-                    height: 100%;
-                    position: absolute;
-                    top:0;
-                    left:0;
-                    border-radius:2px;
-                    background:radial-gradient(circle at 94.02% 88.03%, var(--color-text-lighter), transparent 100%);
-                    opacity:0;
-                    transition:all .5s ease;
-                    z-index: 100;
-                }
-
-                &:hover:after{
-                    opacity: 1;
-                }
-                
-            }
-
-        }
-    }
-
-    cta{
-        display: grid;
-        place-items: center;
-        position: relative;
-        
-        height: 100%;
-        background-color: var(--color-text-lighter-gray2);
-        
-        span{
-            font-size: 3rem;
-            transition: all .2s;
-
-            &:hover{
-                color: var(--color-link-hover);
-                cursor: pointer;
-            }
-        }
-    }
-
-    #cta{
-        display: none;
-        place-items: center;
-        position: relative;
-        
-        height: 100%;
-        color: var(--color-text-lighter);
-        background-color: var(--color-dark);
-        
-        span{
-            font-size: 3rem;
-            transition: all .4s;
-
-            &:hover{
-                color: var(--color-link-hover);
-                cursor: pointer;
-            }
-
-        }
-    }
+    background-color: var(--color-text-lighter-gray2);
 
     > article{
 
@@ -102,7 +13,6 @@
         align-items: center;
 
         width: 100%;
-        background-color: var(--color-text-lighter-gray2);
         padding: 2rem;
 
         h1{
@@ -189,15 +99,6 @@
 
     }
 
-    
-}
-
-.open{
-    animation: sideCorno .5s linear;
-}
-
-.close{
-    animation: sidePraga .5s linear;
 }
 
 @keyframes cardsAnimation{
@@ -209,29 +110,5 @@
     to{
         
         opacity: 1;
-    }
-}
-
-@keyframes sideCorno{
-    from{
-        width: 0;
-        
-    }
-
-    to{
-        
-        width: 30vw;
-    }
-}
-
-@keyframes sidePraga{
-    from{
-        width: 30vw;
-        
-    }
-
-    to{
-        width: 0;
-        
     }
 }

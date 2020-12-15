@@ -92,6 +92,10 @@
     }
 }
 
+aside.mdc-drawer div nav a .mdc-list-item__text{
+    color: var(--color-text-lighter-gray2) !important;
+}
+
 @media only screen and(min-width: 949px){
     #menu{
         display: none;

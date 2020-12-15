@@ -21,7 +21,7 @@ export default class HomeScreen{
                     <div class="products__product">
 
                         <a class="products__product--imageDetails" href="src/#/product/${_id}">
-                            <img src="${image}" alt="${name}" />
+                            <img src="http://localhost:3000/uploads/${image}" alt="${name}" />
                         </a>
 
                         <a class="products__product--productName" href="src/#/product/${_id}">${name}</a>

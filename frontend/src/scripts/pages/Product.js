@@ -64,7 +64,7 @@ export default class Product{
                     </div>
 
                     <div class="container">
-                        <img src="${product.image}"></img>
+                        <img src="http://localhost:3000/uploads/${product.image}"></img>
                         
 
                         <div class="mainContent__singleProduct--productInfo">

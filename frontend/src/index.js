@@ -12,6 +12,7 @@ import Checkout from './scripts/pages/Checkout.js'
 import ProgressIndicator from './scripts/components/ProgressIndicator.js'
 import Order from './scripts/pages/Order.js'
 import Dashboard from './scripts/pages/Dashboard.js'
+import Products from './scripts/pages/Products.js'
 
 const progressIndicator = new ProgressIndicator()
 const header = new Header()
@@ -19,6 +20,7 @@ const header = new Header()
 const routes = {
     "/": HomeScreen,
     "/product/:id": Product,
+    "/products": Products,
     "/cart/:id": Cart,
     "/cart": Cart,
     "/signin": SignIn,

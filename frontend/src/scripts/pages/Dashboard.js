@@ -2,37 +2,15 @@ import changeMainComponentGridLayout from '../utils/changeMainComponent'
 import {api} from '../utils/api'
 import {getLocalStorageItem} from '../utils/localStorageRequests'
 import {Chart} from 'chart.js'
+import DashboardAside from '../components/DashboardAside'
+
+const dashboardAside = new DashboardAside()
 
 export default class Dashboard{
     constructor(){}
 
     get signedUserInfo(){
         return getLocalStorageItem("signedUserInfo")
-    }
-
-    handleSidebarAnimation(){
-        const ctaClose = document.getElementById("ctaClose")
-        const ctaSpan = document.getElementById("ctaSpan")
-        const asideSection = document.querySelector(".asideSection")
-        const aside = document.querySelector("#dashboardAside")
-        const cta = document.getElementById("cta")
-
-        ctaSpan.addEventListener("click", () => {
-            aside.classList.remove("open")
-            aside.classList.add("close")
-            aside.style.width = "0vw"
-            asideSection.style.display = "none"
-            ctaSpan.style.display = "none"
-        })
-
-        ctaClose.addEventListener("click", () => {
-            aside.classList.remove("close")
-            aside.classList.add("open")
-            aside.style.width = "30vw"
-            asideSection.style.display = "grid"
-            ctaSpan.style.display = "grid"
-            cta.style.display = "grid"
-        })
     }
 
     async handleDisplayChart(){
@@ -93,8 +71,8 @@ export default class Dashboard{
 
         this.handleDisplayChart()
 
-        this.handleSidebarAnimation()
-
+        const dashboardAsidePlaceholder = document.querySelector(".dashboardAsidePlaceholder")
+        dashboardAside.render(dashboardAsidePlaceholder)
     }
 
     async render(){
@@ -107,25 +85,7 @@ export default class Dashboard{
 
         <section class="dashboard">
 
-            <aside id="dashboardAside">
-                <section class="asideSection">
-                    <a href="src/#/dashboard">Dashboard</a>
-                    <a href="src/#/admin-orders">Orders</a>
-                    <a href="src/#/products">Products</a>
-                </section>
-
-                <cta id="cta" data-open="false">
-                    <span id="ctaSpan" class="material-icons">
-                        skip_previous
-                    </span>
-                </cta>
-            </aside>
-
-            <cta id="cta2" data-open="false">
-                    <span id="ctaClose" class="material-icons">
-                        skip_next
-                    </span>
-                </cta>
+            <section class="dashboardAsidePlaceholder"></section>
 
             <article class="dashboard__content">
                 <h1 class="title">Dashboard</h1>

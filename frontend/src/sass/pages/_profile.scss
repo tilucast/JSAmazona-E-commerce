@@ -39,11 +39,17 @@
 
             thead{
 
+                border-bottom: 2px solid var(--color-background);
+                
+
                 tr{
 
-                    td{
+                    
+
+                    th{
                         color: var(--color-text-grayish);
                         text-align: center;
+                        margin-bottom: 5rem;
                         
                     }
                 }
