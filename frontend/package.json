@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "live": "live-server src --verbose",
-    "start": "webpack serve",
+    "build": "webpack serve",
     "start-webpack": "webpack serve --watch-content-base --mode=development",
     "watch:sass": "node-sass src/sass/app.scss src/css/style.css -w",
     "compile:sass": "node-sass src/sass/app.scss src/css/style.comp.css",
