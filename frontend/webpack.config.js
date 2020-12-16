@@ -1,4 +1,4 @@
-const autoprefixer = require('autoprefixer')
+//const autoprefixer = require('autoprefixer')
 
 module.exports = [{
     entry: ['./src/sass/app.scss', './src/index.js'],

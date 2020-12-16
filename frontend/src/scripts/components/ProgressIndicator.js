@@ -1,3 +1,5 @@
+import { initiateMaterialProgressIndicator } from "../utils/materialIoScripts"
+
 export default class ProgressIndicator{
 
     constructor(){
@@ -28,5 +30,14 @@ export default class ProgressIndicator{
                 </div>
             </div>
         `
+    }
+
+    open(){
+        this.render()
+        initiateMaterialProgressIndicator().open()
+    }
+
+    close(){
+        initiateMaterialProgressIndicator().close()
     }
 }

@@ -1,6 +1,5 @@
 import Rating from '../components/Rating'
 import {api} from '../utils/api.js'
-import changeMainComponentGridLayout from '../utils/changeMainComponent'
 import { getDataFromLocalStorage } from '../utils/localStorageRequests'
 
 export default class HomeScreen{
