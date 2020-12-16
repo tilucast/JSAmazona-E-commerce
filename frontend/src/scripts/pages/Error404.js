@@ -7,6 +7,18 @@ export default class Error404{
 
         changeMainComponentGridLayout()
 
-        return `<h1>Error Screen</h1>`
+        return `
+            <div class="mainContent__singleProduct--goBack">
+                <a href="/src/#">
+                    <span class="material-icons">
+                    
+                        first_page
+                    </span>
+
+                    Voltar
+                </a>
+            </div>
+            <h1>Error Screen</h1>
+        `
     }
 }

@@ -244,7 +244,7 @@ export default class Profile{
                                         <tr>
                                             <td><a href="src/#/order/${_id}">${_id}</a></td>
                                             <td>${format(new Date(createdAt), "MM/dd/yyyy - H:mm:SS") }</td>
-                                            <td class="totalPrice">${totalPrice}</td>
+                                            <td class="totalPrice">$${totalPrice}</td>
                                             <td>
                                             ${
                                                 isPaid ? `

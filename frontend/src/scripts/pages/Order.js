@@ -147,7 +147,9 @@ export default class Order{
                 ${orderItems.map(item => 
                     `
                         <div class="order__product">
-                            <img src="${item.image}" alt="${item.name}" />
+                            
+                                    <img src="http://localhost:3000/uploads/${item.image}" alt="${reduceStringLength(item.name, item.name.length / 2)}" />
+                                
 
                             <div class="holder">
 

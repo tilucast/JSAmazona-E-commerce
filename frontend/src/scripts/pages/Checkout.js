@@ -520,7 +520,7 @@ export default class Checkout{
                                     ${this.cartItems.map(item => 
                                         `
                                             <div class="shippingInfo__shoppingCartList--product">
-                                                <img src="${item.image}" alt="${item.name}" />
+                                                <img src="http://localhost:3000/uploads/${item.image}" alt="${item.name}" />
 
                                                 <div class="holder">
 

@@ -6,12 +6,20 @@
     background-color: var(--color-bg-light);
     grid-column: center-start / center-end;
 
+    @media only screen and(max-width: 650px){
+        grid-column: full-start / full-end;
+
+        .products{
+            padding: 2rem 1rem;
+        }
+    }
+
     .products{
         padding: 2rem 0;
         display: grid;
         place-items: center;
         grid-gap: 2rem;
-        grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(31rem, 1fr));
     
     
         &__product{

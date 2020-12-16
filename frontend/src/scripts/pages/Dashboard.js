@@ -31,7 +31,6 @@ export default class Dashboard{
             data: {
                 labels: chartLabel ,
                 datasets: [{
-                    label: '# of Votes',
                     data: chartData,
                     backgroundColor: colors,
                     borderColor: colors,
@@ -123,7 +122,7 @@ export default class Dashboard{
                             </span>
                             <span>Sales</span>
                         </subgroup>
-                        <span>R$${totalSales}</span>
+                        <span>$${totalSales}</span>
                     </group>
                     
                 </section>

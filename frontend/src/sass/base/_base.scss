@@ -43,3 +43,32 @@ body{
     minmax(6rem, 1fr) [full-end];
     height: 100%;
 }
+
+.mdc-list-item__text{
+    font-size: 1.3rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.mdc-list-item__graphic{
+    font-size: 2.5rem;
+    color: goldenrod !important;
+}
+
+@media only screen and(max-width: 900px){
+    html{
+        font-size: 58%;
+    }
+}
+
+@media only screen and(max-width: 801px){
+    html{
+        font-size: 54%;
+    }
+}
+
+@media only screen and(max-width: 650px){
+    html{
+        font-size: 51%;
+    }
+}

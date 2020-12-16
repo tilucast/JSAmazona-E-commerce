@@ -13,6 +13,7 @@ import ProgressIndicator from './scripts/components/ProgressIndicator.js'
 import Order from './scripts/pages/Order.js'
 import Dashboard from './scripts/pages/Dashboard.js'
 import Products from './scripts/pages/Products.js'
+import Orders from './scripts/pages/Orders.js'
 
 const progressIndicator = new ProgressIndicator()
 const header = new Header()
@@ -28,6 +29,7 @@ const routes = {
     "/profile": Profile,
     "/checkout": Checkout,
     "/order/:id": Order,
+    "/orders": Orders,
     "/dashboard": Dashboard
 }
 

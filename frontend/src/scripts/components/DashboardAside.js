@@ -32,7 +32,7 @@ export default class DashboardAside{
         <aside id="dashboardAside">
             <section class="asideSection">
                 <a href="src/#/dashboard">Dashboard</a>
-                <a href="src/#/admin-orders">Orders</a>
+                <a href="src/#/orders">Orders</a>
                 <a href="src/#/products">Products</a>
             </section>
 

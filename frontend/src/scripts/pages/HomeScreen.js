@@ -73,8 +73,6 @@ export default class HomeScreen{
 
     async render (){
 
-        changeMainComponentGridLayout()
-
         this.afterRender()
 
         return `

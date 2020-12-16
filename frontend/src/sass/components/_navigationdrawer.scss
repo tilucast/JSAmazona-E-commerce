@@ -11,20 +11,9 @@
 }
 
 .mdc-drawer--modal{
-    top: 90px;
+    top: 9rem;
     background-color: var(--color-background);
 
     @include drawer.divider-color("primary");
     @include drawer.border-color("primary");
-}
-
-.mdc-list-item__text{
-    font-size: 1.3rem;
-    font-weight: 400;
-    letter-spacing: 1px;
-}
-
-.mdc-list-item__graphic{
-    font-size: 2.5rem;
-    color: goldenrod !important;
 }

@@ -156,7 +156,7 @@ export default class Cart{
                         this.cartItems.map(item => 
                             `
                                 <div class="productsCart__productsList--product">
-                                    <img src="${item.image}" alt="${item.name}" />
+                                    <img src="http://localhost:3000/uploads/${item.image}" alt="${item.name}" />
 
                                     <div class="holder">
 
