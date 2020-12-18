@@ -7,7 +7,7 @@ import path from 'path'
 const port = process.env.PORT || 3000
 
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+db.once('open', () => {
   console.log("connected")
 });
 

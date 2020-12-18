@@ -60,7 +60,7 @@ export default class SignIn{
 
     render(){
         
-        redirectAuthenticatedUser()
+        if(getLocalStorageItem("signedUserInfo")) return redirectAuthenticatedUser()
 
         changeMainComponentGridLayout()
 

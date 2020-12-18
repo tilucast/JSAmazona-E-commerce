@@ -1,5 +1,6 @@
 :root{
     --color-background: #203040;
+    --color-background-gold: rgba(255, 247, 228, 0.2);
     --color-dark: #202020;
     --color-text-dark: #2b3947;
     --color-text-lighter: #66a7e7;
@@ -55,6 +56,10 @@ body{
     color: goldenrod !important;
 }
 
+#mainContent{
+    animation: page 2s ease-out;
+}
+
 @media only screen and(max-width: 900px){
     html{
         font-size: 58%;
@@ -70,5 +75,15 @@ body{
 @media only screen and(max-width: 650px){
     html{
         font-size: 51%;
+    }
+}
+
+@keyframes page{
+    from{
+        opacity: 0;
+    }
+
+    to{
+        opacity: 1;
     }
 }

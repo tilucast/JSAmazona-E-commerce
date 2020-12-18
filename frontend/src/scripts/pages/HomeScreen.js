@@ -1,6 +1,7 @@
 import Rating from '../components/Rating'
 import {api} from '../utils/api.js'
 import { getDataFromLocalStorage } from '../utils/localStorageRequests'
+import changeMainComponentGridLayout from '../utils/changeMainComponent'
 
 export default class HomeScreen{
 
@@ -12,7 +13,8 @@ export default class HomeScreen{
 
     async renderProducts(data){
         const productsPlaceholder = document.getElementById("productsPlaceholder")
-
+        
+        
         return productsPlaceholder.innerHTML = `
             <article class="products">
                 ${data.map(({_id, name, category, image, price, 
@@ -72,7 +74,11 @@ export default class HomeScreen{
 
     async render (){
 
-        this.afterRender()
+        changeMainComponentGridLayout()
+        window.onresize = () => {
+            window.innerWidth <= 650 ? changeMainComponentGridLayout('full-start / full-end') : 
+            changeMainComponentGridLayout()
+        }
 
         return `
             <section id="productsPlaceholder"></section>

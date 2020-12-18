@@ -3,6 +3,7 @@ import {api} from '../utils/api'
 import {getLocalStorageItem} from '../utils/localStorageRequests'
 import {Chart} from 'chart.js'
 import DashboardAside from '../components/DashboardAside'
+import { adminProtected } from '../utils/protectedRoute'
 
 const dashboardAside = new DashboardAside()
 
@@ -26,7 +27,7 @@ export default class Dashboard{
         }
 
         const ctx = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx, {
+        new Chart(ctx, {
             type: 'doughnut',
             data: {
                 labels: chartLabel ,
@@ -41,8 +42,6 @@ export default class Dashboard{
                 responsive: true,
             }
         });
-
-        return myChart
     }
 
     async fetchUsersOrdersSales(){
@@ -68,17 +67,19 @@ export default class Dashboard{
 
     async afterRender(){
 
-        this.handleDisplayChart()
-
         const dashboardAsidePlaceholder = document.querySelector(".dashboardAsidePlaceholder")
         dashboardAside.render(dashboardAsidePlaceholder)
     }
 
     async render(){
 
+        if(!this.signedUserInfo.isAdmin) return adminProtected()
+
         changeMainComponentGridLayout("full-start / full-end")
 
         const [totalUsers, totalOrders, totalSales] = await this.fetchUsersOrdersSales()
+
+        this.handleDisplayChart()
 
         return `
 

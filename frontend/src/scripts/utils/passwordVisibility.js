@@ -1,5 +1,8 @@
 export default function passwordVisibility(materialIconObject){
-    const i = document.querySelector('i').addEventListener("click", () => {
+    const i = document.querySelector('#visibility')
+    
+    i.addEventListener("click", () => {
+        
         const passwordInput = document.querySelector('#password')
 
         materialIconObject.forEach(icon => {

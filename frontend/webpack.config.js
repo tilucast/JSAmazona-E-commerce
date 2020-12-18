@@ -2,9 +2,8 @@
 
 module.exports = [{
     entry: ['./src/sass/app.scss', './src/index.js'],
+  
     output: {
-      // This is necessary for webpack to compile
-      // But we never use style-bundle.js
       filename: 'bundle.js',
     },
     module: {
@@ -13,6 +12,7 @@ module.exports = [{
           test: /\.scss$/,
           use: [
             {
+              
               loader: 'file-loader',
               options: {
                 name: 'bundle.css',
@@ -20,22 +20,13 @@ module.exports = [{
             },
             { loader: 'extract-loader' },
             { loader: 'css-loader' },
-            /* {
-              loader: 'postcss-loader',
-              options: {
-                postcssOptions: () => [autoprefixer()]
-              }
-            }, */
             {
               loader: 'sass-loader',
               options: {
                 sassOptions: {
                   includePaths: ['./node_modules']
                 },
-                // Prefer Dart Sass
                 implementation: require('sass'),
-
-                // See https://github.com/webpack-contrib/sass-loader/issues/804
                 webpackImporter: false,
               }
             },
@@ -43,18 +34,13 @@ module.exports = [{
         },
         {
           test: /\.js$/,
-          //loader: 'babel-loader',
-          /* query: {
-            presets: ['@babel/preset-env'],
-          }, */
           use: {
             loader: 'babel-loader',
             options: {
-              //presets: ['@babel/preset-env'],
-              //"plugins": [["@babel/plugin-proposal-class-properties", { "loose": true }]]
             }
           }
-        }
-      ]
+        },
+      ],
     },
-  }];
+  },
+];

@@ -1,6 +1,8 @@
 import { api } from "../utils/api"
 import changeMainComponentGridLayout from "../utils/changeMainComponent"
+import { getLocalStorageItem } from "../utils/localStorageRequests"
 import { initiateMaterialButton, initiateMaterialSnackbar, initiateMaterialTextField } from "../utils/materialIoScripts"
+import { redirectAuthenticatedUser } from "../utils/protectedRoute"
 
 export default class SignUp{
 
@@ -42,11 +44,14 @@ export default class SignUp{
         initiateMaterialTextField()
         initiateMaterialButton()
         this.handleSignUp()
+
     }
 
     render(){
+        
+        if(getLocalStorageItem("signedUserInfo")) return redirectAuthenticatedUser()
 
-        changeMainComponentGridLayout()
+        changeMainComponentGridLayout()        
 
         return `
             <section class="signUp">

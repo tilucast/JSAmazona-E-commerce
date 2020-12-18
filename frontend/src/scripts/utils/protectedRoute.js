@@ -10,3 +10,7 @@ export function redirectUnauthenticatedUser(){
 export function redirectAuthenticatedUser(){
     if(getLocalStorageItem("signedUserInfo"))  history.push("/")
 }
+
+export function adminProtected(){
+    if(!getLocalStorageItem("signedUserInfo").isAdmin) history.push("/")
+}

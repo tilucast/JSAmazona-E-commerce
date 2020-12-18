@@ -1,7 +1,6 @@
 import {MDCRipple} from '@material/ripple'
 import {MDCSelect} from '@material/select';
 import {MDCTextField} from '@material/textfield';
-import {MDCTextFieldHelperText} from '@material/textfield/helper-text';
 import {MDCSnackbar} from '@material/snackbar';
 import { MDCLinearProgress } from '@material/linear-progress';
 import {MDCTextFieldIcon} from '@material/textfield/icon';
@@ -10,7 +9,6 @@ import {MDCTabBar} from '@material/tab-bar';
 import {MDCFormField} from '@material/form-field';
 import {MDCRadio} from '@material/radio';
 import {MDCDrawer} from "@material/drawer";
-import {MDCList} from "@material/list";
 
 export function initiateMaterialButton(){
     const buttonRipple = new MDCRipple(document.querySelector('.mdc-button'))
@@ -33,12 +31,6 @@ export function initiateMaterialSelect(){
 export function initiateMaterialTextField(){
     const textFields = [].map.call(document.querySelectorAll('.mdc-text-field'), function(el){
         return new MDCTextField(el)
-    })
-}
-
-export function initiateMaterialTextHelper(){
-    const textHelpers = [].map.call(document.querySelectorAll('.mdc-text-field-helper-text'), function(el){
-        return new MDCTextFieldHelperText(el)
     })
 }
 

@@ -52,7 +52,7 @@ export default class Order{
 
     async render(){
 
-        redirectUnauthenticatedUser()
+        if(!this.signedUserInfo) return redirectUnauthenticatedUser()
 
         changeMainComponentGridLayout()
 

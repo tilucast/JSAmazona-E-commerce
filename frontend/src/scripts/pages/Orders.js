@@ -2,14 +2,36 @@ import DashboardAside from "../components/DashboardAside"
 import changeMainComponentGridLayout from "../utils/changeMainComponent"
 import {api} from '../utils/api'
 import {getLocalStorageItem} from '../utils/localStorageRequests'
+import {Chart} from 'chart.js'
+import { adminProtected } from "../utils/protectedRoute"
 
 const dashboardAside = new DashboardAside()
 
 export default class Orders{
-    constructor(){}
 
     get signedUserInfo(){
         return getLocalStorageItem("signedUserInfo")
+    }
+
+    constructor(){}
+
+    async getOrders(){
+        const {data} = await api.get("/api/orders/all", {headers: {'auth-token': this.signedUserInfo.token}})
+        
+        let tax = 0
+        let shipping = 0
+        let items = 0
+
+        for(let item of data){
+            tax += item.taxPrice
+            shipping += item.shippingPrice
+            items += item.itemsPrice
+        }
+
+        let total = (tax + shipping + items).toFixed(2)
+        
+        return [tax, shipping, items, total]
+
     }
 
     async handleDisplayChart(){
@@ -20,8 +42,8 @@ export default class Orders{
         let y = (shipping * 100 / total).toFixed(2)
         let z = (items * 100 / total).toFixed(2)
 
-        const ctx = document.getElementById('myChart').getContext('2d');
-        const myChart = new Chart(ctx, {
+        const ctx = document.getElementById('ordersChart').getContext('2d');
+        new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: [`Taxes: ${x}%`,`Shipping: ${y}%`,`Items: ${z}%`] ,
@@ -48,31 +70,9 @@ export default class Orders{
                 }
             }
         });
-
-        return myChart
-    }
-
-    async getOrders(){
-        const {data} = await api.get("/api/orders/all", {headers: {'auth-token': this.signedUserInfo.token}})
-        
-        let tax = 0
-        let shipping = 0
-        let items = 0
-
-        for(let item of data){
-            tax += item.taxPrice
-            shipping += item.shippingPrice
-            items += item.itemsPrice
-        }
-
-        let total = (tax + shipping + items).toFixed(2)
-        
-        return [tax, shipping, items, total]
-
     }
 
     async afterRender(){
-        this.handleDisplayChart()
 
         const dashboardAsidePlaceholder = document.querySelector(".dashboardAsidePlaceholder")
         dashboardAside.render(dashboardAsidePlaceholder)
@@ -80,13 +80,19 @@ export default class Orders{
     }
 
     async render(){
+
+        if(!this.signedUserInfo.isAdmin) return adminProtected()
+
         changeMainComponentGridLayout("full-start / full-end")
 
-        const [tax, shipping, items, total] = await this.getOrders()
+        const [tax, shipping, items, total] = await this.getOrders()       
+
+        this.handleDisplayChart()
 
         return `
 
             <section id="orders">
+
                 <section class="dashboardAsidePlaceholder"></section>
 
                 <article class="">
@@ -133,15 +139,13 @@ export default class Orders{
                     <div>
                         <span>Sales details</span>
                         <article class="canvasContainer">
-                            <canvas id="myChart"></canvas>
+                            <canvas id="ordersChart"></canvas>
                         </article>
                     </div>
 
                 </article>
                 
             </section>
-            
-            
         `
     }
 }

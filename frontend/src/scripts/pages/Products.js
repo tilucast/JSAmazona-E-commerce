@@ -2,11 +2,17 @@ import DashboardAside from "../components/DashboardAside"
 import changeMainComponentGridLayout from "../utils/changeMainComponent"
 import { initiateMaterialButton, initiateMaterialSelect, initiateMaterialTextField } from "../utils/materialIoScripts"
 import {api} from '../utils/api'
+import { adminProtected } from "../utils/protectedRoute"
+import { getLocalStorageItem } from "../utils/localStorageRequests"
 
 const dashboardAside = new DashboardAside()
 
 export default class Products{
     constructor(){}
+
+    get signedUserInfo(){
+        return getLocalStorageItem("signedUserInfo")
+    }
 
     createPreviewImage(img){
         const preview = document.querySelector("#previewImage")
@@ -53,7 +59,7 @@ export default class Products{
         
     }
 
-    afterRender(){
+    async afterRender(){
         const dashboardAsidePlaceholder = document.querySelector(".dashboardAsidePlaceholder")
         dashboardAside.render(dashboardAsidePlaceholder)
 
@@ -67,7 +73,9 @@ export default class Products{
         
     }
 
-    render(){
+    async render(){
+
+        if(!this.signedUserInfo.isAdmin) return adminProtected()
 
         changeMainComponentGridLayout("full-start / full-end")
 

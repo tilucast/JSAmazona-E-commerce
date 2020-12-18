@@ -3,11 +3,10 @@
 }
 
 #mainContent{
-    background-color: var(--color-bg-light);
+    background-color: var(--color-background-gold);
     grid-column: center-start / center-end;
 
     @media only screen and(max-width: 650px){
-        grid-column: full-start / full-end;
 
         .products{
             padding: 2rem 1rem;

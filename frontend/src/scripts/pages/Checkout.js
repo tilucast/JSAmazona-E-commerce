@@ -262,7 +262,7 @@ export default class Checkout{
 
     render(){
 
-        redirectUnauthenticatedUser()
+        if(!this.userInfo) return redirectUnauthenticatedUser()
 
         changeMainComponentGridLayout()
 

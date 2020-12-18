@@ -1,14 +1,13 @@
-import Dialog from "../components/Dialog"
-import Header from "../components/Header"
-import Snackbar from "../components/Snackbar"
 import { api } from "../utils/api"
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localStorageRequests"
 import { initiateMaterialButton, initiateMaterialSnackbar, initiateMaterialTextField, initiateMaterialTextfieldIcon } from "../utils/materialIoScripts"
 import passwordVisibility from "../utils/passwordVisibility"
 import {redirectUnauthenticatedUser} from "../utils/protectedRoute"
-import rerenderComponent from "../utils/rerenderComponent"
 import {format} from 'date-fns'
 import changeMainComponentGridLayout from "../utils/changeMainComponent"
+import Dialog from "../components/Dialog"
+import Header from "../components/Header"
+import Snackbar from "../components/Snackbar"
 
 export default class Profile{
 
@@ -65,7 +64,7 @@ export default class Profile{
                         initiateMaterialSnackbar().open()
                         initiateMaterialSnackbar().labelText = "Informations were updated."
 
-                        rerenderComponent(Header, ".header")
+                        new Header().insertIntoHtml()
 
                     }
                 })
