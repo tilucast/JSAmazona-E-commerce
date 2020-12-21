@@ -1,3 +1,3 @@
 # JS Amazona
 
-<img href="./images/screen1.png"></img>
+<img src="./images/screen1.png"></img>
