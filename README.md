@@ -11,19 +11,19 @@ That being said, i'm just a student trying to make some projects.
 
 On the frontend, i'm using these:
 
-<a src="https://github.com/material-components/material-components-web">Material Components Web</a>
-<a src="https://www.chartjs.org/">Chart.js</a>
-<a src="https://sass-lang.com/">Sass</a>
-<a src="https://webpack.js.org/">Webpack</a> to handle scss, bundling, etc.
+<a href="https://github.com/material-components/material-components-web">Material Components Web</a>
+<a href="https://www.chartjs.org/">Chart.js</a>
+<a href="https://sass-lang.com/">Sass</a>
+<a href="https://webpack.js.org/">Webpack</a> to handle scss, bundling, etc.
 
 My webpack.config.js is a mix between of what is being taught on the official webpack docs, and on the material component's.
 
 On the backend, i'm using:
 
-<a src="https://mongoosejs.com/">Mongoose</a>
-<a src="https://www.npmjs.com/package/ts-node">ts-node</a>
-<a src="https://www.npmjs.com/package/multer">Multer</a>
-<a src="https://jwt.io/">jwt</a>
+<a href="https://mongoosejs.com/">Mongoose</a>
+<a href="https://www.npmjs.com/package/ts-node">ts-node</a>
+<a href="https://www.npmjs.com/package/multer">Multer</a>
+<a href="https://jwt.io/">jwt</a>
 
 -----------------------------------------------------------------
 
