@@ -1,1 +1,3 @@
-I'll be writing this readme soon.
+# JS Amazona
+
+![GitHub Logo](/images/screen1.png)
