@@ -12,8 +12,11 @@ That being said, i'm just a student trying to make some projects.
 On the frontend, i'm using these:
 
 <a href="https://github.com/material-components/material-components-web">Material Components Web</a>
+
 <a href="https://www.chartjs.org/">Chart.js</a>
+
 <a href="https://sass-lang.com/">Sass</a>
+
 <a href="https://webpack.js.org/">Webpack</a> to handle scss, bundling, etc.
 
 My webpack.config.js is a mix between of what is being taught on the official webpack docs, and on the material component's.
