@@ -19,7 +19,7 @@ On the frontend, i'm using these:
 
 <a href="https://webpack.js.org/">Webpack</a> to handle scss, bundling, etc.
 
-My webpack.config.js is a mix between of what is being taught on the official webpack docs, and on the material component's.
+webpack.config.js is a mix between of what is being taught on the official webpack docs, and on the material component's.
 
 On the backend, i'm using:
 
