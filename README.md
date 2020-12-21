@@ -5,7 +5,7 @@
 # Before you read
 
 I took the idea of this project from this youtube tutorial: <a href="https://www.youtube.com/watch?v=N3FDyheHVMM&list=WL&index=46&t=81s">Link</a>. 
-The instructor's code was not to my liking, a lot of "questionable" stuff being taught and not really being explained properly to beginners, which was the goal of the video. His video has 7 hours, and the complete project is available on <a href="https://www.youtube.com/watch?v=N3FDyheHVMM&list=WL&index=46&t=81s">Udemy</a>.
+The instructor's code was not to my liking, a lot of "questionable" stuff being taught and not really being explained properly to beginners, which was the goal of the video. His video has 7 hours, and his complete project is available on <a href="https://www.udemy.com/course/build-ecommerce-like-amazon-javascript-node-mongodb/?couponCode=BASIR7">Udemy</a>.
 
 That being said, i'm just a student trying to make some projects.
 
