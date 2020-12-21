@@ -24,8 +24,11 @@ My webpack.config.js is a mix between of what is being taught on the official we
 On the backend, i'm using:
 
 <a href="https://mongoosejs.com/">Mongoose</a>
+
 <a href="https://www.npmjs.com/package/ts-node">ts-node</a>
+
 <a href="https://www.npmjs.com/package/multer">Multer</a>
+
 <a href="https://jwt.io/">jwt</a>
 
 -----------------------------------------------------------------
