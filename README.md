@@ -99,7 +99,7 @@ redirectUnauthenticatedUser() is a function that checks if the current user is a
 
 So, why am i checking again the user credentials with a conditional "(if ...)" when i'm already checking it on the redirectUnauthenticatedUser()?
 
-Going back to the router() method, he have this piece of code:
+Going back to the router() method, we have this piece of code:
 
 ```` 
 
